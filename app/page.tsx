@@ -1,7 +1,11 @@
- export default function HomePage() {
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/home/Hero";
+
+export default function HomePage() {
   return (
-    <h1 style={{ fontSize: "60px", color: "red" }}>
-      ÇETİNKAYA V2 ÇALIŞIYOR
-    </h1>
+    <>
+      <Navbar />
+      <Hero />
+    </>
   );
 }
