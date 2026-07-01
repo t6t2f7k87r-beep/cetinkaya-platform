@@ -38,7 +38,7 @@ export default function LiveSupportWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       author: "support",
-      text: "Merhaba, Çetinkaya canlı destek hattına hoş geldiniz. Ürün, nakliye, teklif ve e-fatura için yardımcı olabilirim.",
+      text: "Merhaba, Çetinkayalar İnşaat canlı destek hattına hoş geldiniz. Ürün, nakliye, teklif ve e-fatura için yardımcı olabilirim.",
     },
   ]);
 

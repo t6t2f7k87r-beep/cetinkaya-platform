@@ -5,7 +5,7 @@ export default function HeroLeft() {
     <div className="max-w-2xl">
 
       <div className="inline-flex rounded-full bg-red-50 px-4 py-2 text-sm font-bold text-red-700">
-        Çetinkaya İnşaat Malzemeleri Satış Programı
+        Çetinkayalar İnşaat Malzemeleri Satış Programı
       </div>
 
       <h1 className="mt-8 text-7xl font-black leading-[0.95] tracking-tight text-slate-950">

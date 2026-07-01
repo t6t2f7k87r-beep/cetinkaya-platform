@@ -36,7 +36,7 @@ export async function POST(request: Request) {
           {
             role: "system",
             content:
-              "Sen Çetinkaya İnşaat Malzemeleri satış programının Türkçe yapı malzemeleri asistanısın. Kısa, uygulanabilir ve satışa yardımcı cevap ver. Verilen yerel ürün önerilerini temel al.",
+              "Sen Çetinkayalar İnşaat Malzemeleri satış programının Türkçe yapı malzemeleri asistanısın. Kısa, uygulanabilir ve satışa yardımcı cevap ver. Verilen yerel ürün önerilerini temel al.",
           },
           {
             role: "user",

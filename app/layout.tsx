@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://cetinkayayapi.com"),
 
   title: {
-    default: "Çetinkaya İnşaat Malzemeleri",
-    template: "%s | Çetinkaya Yapı",
+    default: "Çetinkayalar İnşaat Malzemeleri",
+    template: "%s | Çetinkayalar İnşaat",
   },
 
   description:
@@ -22,18 +22,18 @@ export const metadata: Metadata = {
     "Yapı Malzemeleri",
     "İnşaat Malzemeleri",
     "Demir Fiyatları",
-    "Çetinkaya Yapı",
+    "Çetinkayalar İnşaat",
   ],
 
   authors: [
     {
-      name: "Çetinkaya Yapı",
+      name: "Çetinkayalar İnşaat",
     },
   ],
 
-  creator: "Çetinkaya Yapı",
+  creator: "Çetinkayalar İnşaat",
 
-  publisher: "Çetinkaya Yapı",
+  publisher: "Çetinkayalar İnşaat",
 
   robots: {
     index: true,
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Çetinkaya İnşaat Malzemeleri",
+    title: "Çetinkayalar İnşaat Malzemeleri",
 
     description:
       "İnşaat malzemesi satışı, teklif, nakliye ve ödeme yönetimi",
 
     url: "https://cetinkayayapi.com",
 
-    siteName: "Çetinkaya Yapı",
+    siteName: "Çetinkayalar İnşaat",
 
     locale: "tr_TR",
 
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Çetinkaya Yapı",
+    title: "Çetinkayalar İnşaat",
 
     description:
       "İnşaat malzemesi satışı, teklif, nakliye ve ödeme yönetimi",

@@ -47,7 +47,7 @@ export default function PlatformHighlights() {
           </div>
 
           <p className="text-lg leading-8 text-slate-300">
-            Malatya merkezli Çetinkaya inşaat malzemeleri satış programı, şantiye ihtiyaçlarını hızlandırmak için
+            Malatya merkezli Çetinkayalar İnşaat malzemeleri satış programı, şantiye ihtiyaçlarını hızlandırmak için
             ürün kataloğu, canlı fiyat, lojistik ve yapay zeka destekli teklif
             akışını tek yerde toplar.
           </p>
