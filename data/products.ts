@@ -1,43 +1,36 @@
-export interface Product {
-  id: number;
-  title: string;
-  category: string;
-  price: number;
-  image: string;
-  stock: string;
-}
+ import { Product } from "@/types/product";
 
-export const featuredProducts: Product[] = [
+export const products: Product[] = [
   {
     id: 1,
-    title: "Nervürlü İnşaat Demiri",
+    name: "B420C İnşaat Demiri",
     category: "Demir",
+    brand: "Kardemir",
     price: 32450,
-    image: "/images/products/demir.jpg",
-    stock: "Stokta",
+    image: "/products/demir.jpg",
+    unit: "Ton",
+    stock: true,
   },
   {
     id: 2,
-    title: "42.5 Portland Çimento",
+    name: "Portland Çimento",
     category: "Çimento",
-    price: 265,
-    image: "/images/products/cimento.jpg",
-    stock: "Stokta",
+    brand: "OYAK",
+    price: 285,
+    image: "/products/cimento.jpg",
+    unit: "Torba",
+    stock: true,
   },
   {
     id: 3,
-    title: "Gaz Beton Blok",
+    name: "Gaz Beton Blok",
     category: "Gaz Beton",
-    price: 145,
-    image: "/images/products/gazbeton.jpg",
-    stock: "Stokta",
-  },
-  {
-    id: 4,
-    title: "Yığma Tuğla",
-    category: "Tuğla",
-    price: 16,
-    image: "/images/products/tugla.jpg",
-    stock: "Stokta",
+    brand: "YTONG",
+    price: 165,
+    image: "/products/gazbeton.jpg",
+    unit: "Adet",
+    stock: true,
   },
 ];
+
+export const featuredProducts = products;

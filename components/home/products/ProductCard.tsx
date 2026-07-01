@@ -1,53 +1,56 @@
-import Image from "next/image";
-import { ShoppingCart } from "lucide-react";
+ import { Product } from "@/types/product";
+import { ArrowRight, Package } from "lucide-react";
 
-import { Product } from "@/data/products";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-
-interface Props {
+type Props = {
   product: Product;
-}
+};
 
 export default function ProductCard({ product }: Props) {
   return (
-    <Card className="overflow-hidden">
-      <div className="relative h-56 bg-slate-100">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          className="object-cover transition duration-500 hover:scale-110"
-        />
+    <article className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+
+      <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-zinc-100 to-zinc-200">
+        <Package size={72} className="text-zinc-400" />
       </div>
 
-      <CardContent className="space-y-5 p-6">
-        <div>
-          <span className="text-sm text-yellow-600 font-semibold">
-            {product.category}
-          </span>
+      <div className="p-6">
 
-          <h3 className="mt-2 text-xl font-bold">
-            {product.title}
-          </h3>
-        </div>
+        <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-yellow-700">
+          {product.category}
+        </span>
 
-        <div className="flex items-center justify-between">
+        <h3 className="mt-4 text-2xl font-bold text-zinc-900">
+          {product.name}
+        </h3>
+
+        <p className="mt-2 text-sm text-zinc-500">
+          {product.brand}
+        </p>
+
+        <div className="mt-8 flex items-end justify-between">
+
           <div>
-            <p className="text-sm text-slate-500">
-              Başlangıç Fiyatı
+            <p className="text-sm text-zinc-500">
+              Başlangıç
             </p>
 
-            <h2 className="text-3xl font-black">
+            <p className="text-3xl font-black text-yellow-600">
               ₺{product.price.toLocaleString("tr-TR")}
-            </h2>
+            </p>
+
+            <p className="text-sm text-zinc-500">
+              / {product.unit}
+            </p>
           </div>
 
-          <Button size="icon">
-            <ShoppingCart size={18} />
-          </Button>
+          <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-500 text-white transition group-hover:scale-110 group-hover:bg-yellow-600">
+            <ArrowRight size={20} />
+          </button>
+
         </div>
-      </CardContent>
-    </Card>
+
+      </div>
+
+    </article>
   );
 }
