@@ -15,16 +15,16 @@
 
 export default function HeroStats() {
   return (
-    <div className="mt-16 grid grid-cols-3 gap-10">
+    <div className="mt-10 grid max-w-xl grid-cols-3 gap-4 sm:gap-6 lg:mt-14">
 
       {stats.map((item) => (
         <div key={item.label}>
 
-          <h2 className="text-5xl font-black text-zinc-900">
+          <h2 className="text-3xl font-black text-zinc-900 sm:text-4xl lg:text-5xl">
             {item.value}
           </h2>
 
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-zinc-500">
+          <p className="mt-2 text-xs font-semibold uppercase text-zinc-500 sm:text-sm">
             {item.label}
           </p>
 
