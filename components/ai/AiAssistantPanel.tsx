@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrainCircuit, Send, Sparkles } from "lucide-react";
 
-import { products } from "@/data/products";
+import { AiAnswer, buildLocalAiAnswer } from "@/lib/ai";
 
 const suggestions = [
   "120 m² kaba inşaat için demir ve çimento öner",
@@ -11,33 +11,61 @@ const suggestions = [
   "İstanbul'dan Ankara'ya 12 ton demir nakliye planı çıkar",
 ];
 
-function buildAnswer(prompt: string) {
-  const normalized = prompt.toLocaleLowerCase("tr-TR");
-  const matchedProducts = products.filter((product) =>
-    [product.name, product.category, product.description, ...product.tags]
-      .join(" ")
-      .toLocaleLowerCase("tr-TR")
-      .includes(normalized.split(" ")[0] ?? "")
-  );
-
-  const recommended = matchedProducts.length > 0 ? matchedProducts : products.slice(0, 3);
-  const total = recommended.reduce((sum, product) => sum + product.price, 0);
-
-  return {
-    summary:
-      "Bu talep için önce stokta olan ana malzemeleri ayırıp, ardından nakliye ve teklif akışını birlikte planlamak en doğru yol olur.",
-    products: recommended.slice(0, 3),
-    estimatedTotal: total,
-    nextStep:
-      "Net metraj, teslimat ili ve istenen teslim tarihini eklersen daha kesin teklif senaryosu oluşturabilirim.",
-  };
-}
-
 export default function AiAssistantPanel() {
   const [prompt, setPrompt] = useState("");
   const [submittedPrompt, setSubmittedPrompt] = useState(suggestions[0]);
+  const [answer, setAnswer] = useState<AiAnswer>(() =>
+    buildLocalAiAnswer(suggestions[0]),
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [mode, setMode] = useState("local");
 
-  const answer = useMemo(() => buildAnswer(submittedPrompt), [submittedPrompt]);
+  useEffect(() => {
+    let isMounted = true;
+
+    async function askAssistant() {
+      setIsLoading(true);
+
+      try {
+        const response = await fetch("/api/ai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: submittedPrompt }),
+        });
+
+        if (!response.ok) {
+          throw new Error("AI isteği tamamlanamadı.");
+        }
+
+        const data = (await response.json()) as {
+          answer: AiAnswer;
+          mode: string;
+        };
+
+        if (isMounted) {
+          setAnswer(data.answer);
+          setMode(data.mode);
+        }
+      } catch {
+        if (isMounted) {
+          setAnswer(buildLocalAiAnswer(submittedPrompt));
+          setMode("local");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    askAssistant();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [submittedPrompt]);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
@@ -52,8 +80,8 @@ export default function AiAssistantPanel() {
 
         <p className="mt-4 leading-8 text-slate-600">
           Malzeme seçimi, yaklaşık maliyet, nakliye ve teklif hazırlığı için
-          akıllı öneriler üretir. Bu sürüm yerel kurallarla çalışır; OpenAI API
-          anahtarı eklenince gerçek sohbet motoruna bağlanabilir.
+          akıllı öneriler üretir. Ürün kataloğu ve nakliye verisini okuyarak
+          cevap verir; API anahtarı varsa canlı modele bağlanır.
         </p>
 
         <div className="mt-8 space-y-3">
@@ -61,9 +89,9 @@ export default function AiAssistantPanel() {
             <button
               key={item}
               type="button"
-              onClick={() => {
-                setPrompt(item);
-                setSubmittedPrompt(item);
+            onClick={() => {
+              setPrompt(item);
+              setSubmittedPrompt(item);
               }}
               className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-left font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
             >
@@ -101,7 +129,7 @@ export default function AiAssistantPanel() {
       <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-2xl shadow-slate-950/20 lg:p-8">
         <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase text-red-700">
           <Sparkles size={14} />
-          Öneri Çıktısı
+          {isLoading ? "Düşünüyor" : mode === "openai" ? "Canlı AI" : "Akıllı Öneri"}
         </div>
 
         <h2 className="mt-6 text-2xl font-black">
@@ -109,7 +137,7 @@ export default function AiAssistantPanel() {
         </h2>
 
         <p className="mt-4 leading-8 text-slate-300">
-          {answer.summary}
+          {isLoading ? "Talebinizi ürün, stok ve nakliye verileriyle eşleştiriyorum..." : answer.summary}
         </p>
 
         <div className="mt-6 space-y-3">

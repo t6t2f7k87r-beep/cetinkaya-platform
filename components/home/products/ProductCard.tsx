@@ -1,5 +1,7 @@
+import Image from "next/image";
+
 import { Product } from "@/types/product";
-import { ArrowRight, Package } from "lucide-react";
+import { ArrowRight, MapPin, Truck } from "lucide-react";
 
 type Props = {
   product: Product;
@@ -8,27 +10,48 @@ type Props = {
 export default function ProductCard({ product }: Props) {
   return (
     <article className="group overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-950/10">
+      <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
+          className="object-cover transition duration-500 group-hover:scale-105"
+        />
 
-      <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-slate-100 to-red-50">
-        <Package size={72} className="text-slate-400" />
+        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+          <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-black uppercase tracking-wide text-red-700 shadow-sm">
+            {product.category}
+          </span>
+
+          <span className="rounded-full bg-slate-950/90 px-3 py-1 text-xs font-bold text-white shadow-sm">
+            {product.stock ? "Stokta" : "Ön sipariş"}
+          </span>
+        </div>
       </div>
 
       <div className="p-6">
-
-        <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-700">
-          {product.category}
-        </span>
-
-        <h3 className="mt-4 text-2xl font-bold text-slate-950">
+        <h3 className="text-2xl font-bold text-slate-950">
           {product.name}
         </h3>
 
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm font-semibold text-slate-500">
           {product.brand}
         </p>
 
-        <div className="mt-8 flex items-end justify-between">
+        <div className="mt-4 grid gap-2 text-sm text-slate-500">
+          <div className="flex items-center gap-2">
+            <MapPin size={16} className="text-red-700" />
+            {product.location}
+          </div>
 
+          <div className="flex items-center gap-2">
+            <Truck size={16} className="text-red-700" />
+            {product.deliveryTime}
+          </div>
+        </div>
+
+        <div className="mt-8 flex items-end justify-between">
           <div>
             <p className="text-sm text-slate-500">
               Başlangıç
@@ -43,14 +66,14 @@ export default function ProductCard({ product }: Props) {
             </p>
           </div>
 
-          <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-110 group-hover:bg-red-700">
+          <button
+            className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-110 group-hover:bg-red-700"
+            aria-label={`${product.name} detayına git`}
+          >
             <ArrowRight size={20} />
           </button>
-
         </div>
-
       </div>
-
     </article>
   );
 }

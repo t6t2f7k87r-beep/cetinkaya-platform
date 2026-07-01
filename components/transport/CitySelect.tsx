@@ -1,32 +1,39 @@
+import { TransportCity } from "@/types/transport";
+
 type Props = {
   label: string;
   placeholder: string;
+  cities: TransportCity[];
+  value: number;
+  onChange: (cityId: number) => void;
 };
 
 export default function CitySelect({
   label,
   placeholder,
+  cities,
+  value,
+  onChange,
 }: Props) {
   return (
     <div>
-
       <label className="mb-2 block text-sm font-bold text-zinc-700">
         {label}
       </label>
 
-      <select className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 outline-none focus:border-red-700">
+      <select
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 outline-none transition focus:border-red-700"
+      >
+        <option value={0}>{placeholder}</option>
 
-        <option>{placeholder}</option>
-
-        <option>Malatya</option>
-        <option>İstanbul</option>
-        <option>Ankara</option>
-        <option>İzmir</option>
-        <option>Gaziantep</option>
-        <option>Adana</option>
-
+        {cities.map((city) => (
+          <option key={city.id} value={city.id}>
+            {city.name} · {city.region}
+          </option>
+        ))}
       </select>
-
     </div>
   );
 }
