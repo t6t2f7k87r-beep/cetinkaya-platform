@@ -1,7 +1,4 @@
-import CategorySidebar from "@/components/home/products/CategorySidebar";
-import ProductGrid from "@/components/home/products/ProductGrid";
-import ProductPagination from "@/components/home/products/ProductPagination";
-import ProductToolbar from "@/components/home/products/ProductToolbar";
+import ProductCatalog from "@/components/home/products/ProductCatalog";
 import Navbar from "@/components/layout/Navbar";
 
 export default function ProductsPage() {
@@ -25,17 +22,7 @@ export default function ProductsPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-[280px_1fr]">
-            <CategorySidebar />
-
-            <div>
-              <ProductToolbar />
-              <div className="mt-8">
-                <ProductGrid />
-              </div>
-              <ProductPagination />
-            </div>
-          </div>
+          <ProductCatalog />
         </section>
       </main>
     </>

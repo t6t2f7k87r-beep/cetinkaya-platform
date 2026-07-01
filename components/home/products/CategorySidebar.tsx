@@ -1,13 +1,26 @@
-import { featuredProducts } from "@/data/products";
+import { Product } from "@/types/product";
 
-const categories = Array.from(
-  featuredProducts.reduce<Map<string, number>>((items, product) => {
-    items.set(product.category, (items.get(product.category) ?? 0) + 1);
-    return items;
-  }, new Map())
-);
+type Props = {
+  activeCategory: string;
+  categories: string[];
+  products: Product[];
+  onCategoryChange: (category: string) => void;
+};
 
-export default function CategorySidebar() {
+function getCategoryCount(products: Product[], category: string) {
+  if (category === "Tümü") {
+    return products.length;
+  }
+
+  return products.filter((product) => product.category === category).length;
+}
+
+export default function CategorySidebar({
+  activeCategory,
+  categories,
+  products,
+  onCategoryChange,
+}: Props) {
   return (
     <aside className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 className="text-lg font-black text-slate-950">
@@ -15,20 +28,25 @@ export default function CategorySidebar() {
       </h2>
 
       <div className="mt-5 space-y-2">
-        <button className="flex w-full items-center justify-between rounded-2xl bg-red-700 px-4 py-3 text-left font-bold text-white">
-          <span>Tüm Ürünler</span>
-          <span>{featuredProducts.length}</span>
-        </button>
+        {categories.map((category) => {
+          const active = category === activeCategory;
 
-        {categories.map(([category, count]) => (
+          return (
           <button
             key={category}
-            className="flex w-full items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 text-left font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
+            type="button"
+            onClick={() => onCategoryChange(category)}
+            className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold transition ${
+              active
+                ? "bg-red-700 text-white"
+                : "border border-slate-200 text-slate-700 hover:border-red-200 hover:text-red-700"
+            }`}
           >
-            <span>{category}</span>
-            <span>{count}</span>
+            <span>{category === "Tümü" ? "Tüm Ürünler" : category}</span>
+            <span>{getCategoryCount(products, category)}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
     </aside>
   );

@@ -1,20 +1,20 @@
-export default function ProductPagination() {
+type Props = {
+  currentCount: number;
+  totalCount: number;
+};
+
+export default function ProductPagination({
+  currentCount,
+  totalCount,
+}: Props) {
   return (
     <nav
       aria-label="Ürün sayfaları"
-      className="mt-12 flex items-center justify-center gap-2"
+      className="mt-12 flex flex-col items-center justify-center gap-3 text-center sm:flex-row"
     >
-      <button className="rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-500">
-        Önceki
-      </button>
-
-      <button className="h-12 w-12 rounded-2xl bg-red-700 font-bold text-white">
-        1
-      </button>
-
-      <button className="rounded-2xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-950">
-        Sonraki
-      </button>
+      <p className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-600">
+        {totalCount} ürün içinde {currentCount} ürün gösteriliyor
+      </p>
     </nav>
   );
 }

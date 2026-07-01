@@ -1,6 +1,11 @@
 import { Search } from "lucide-react";
 
-export default function ProductSearch() {
+type Props = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+export default function ProductSearch({ value, onChange }: Props) {
   return (
     <div className="relative w-full">
       <Search
@@ -10,7 +15,9 @@ export default function ProductSearch() {
 
       <input
         type="text"
+        value={value}
         placeholder="Ürün, marka veya kategori ara..."
+        onChange={(event) => onChange(event.target.value)}
         className="h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-5 outline-none transition focus:border-red-700"
       />
     </div>
