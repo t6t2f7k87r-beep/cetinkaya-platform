@@ -1,103 +1,97 @@
-import {
-  Building2,
-  BrickWall,
-  Cylinder,
-  Package,
-  Pickaxe,
-  Hammer,
-  Layers3,
-  Shield,
-} from "lucide-react";
-
-import Container from "@/components/shared/Container";
-import Section from "@/components/shared/Section";
-import SectionTitle from "@/components/shared/SectionTitle";
-
-const categories = [
+ const categories = [
   {
-    title: "İnşaat Demiri",
-    icon: Building2,
-    count: "25+ Ürün",
+    icon: "🏗️",
+    title: "Demir",
+    description: "İnşaat demiri ve çelik ürünleri",
   },
   {
-    title: "Çimento",
-    icon: Package,
-    count: "12+ Ürün",
-  },
-  {
+    icon: "🧱",
     title: "Tuğla",
-    icon: BrickWall,
-    count: "30+ Ürün",
+    description: "Tuğla ve duvar ürünleri",
   },
   {
+    icon: "🏢",
+    title: "Çimento",
+    description: "Tüm çimento çeşitleri",
+  },
+  {
+    icon: "🪨",
     title: "Gaz Beton",
-    icon: Layers3,
-    count: "18+ Ürün",
+    description: "Ytong ve gaz beton ürünleri",
   },
   {
-    title: "Alçı",
-    icon: Cylinder,
-    count: "20+ Ürün",
+    icon: "🪟",
+    title: "PVC",
+    description: "Kapı ve pencere sistemleri",
   },
   {
-    title: "Kireç",
-    icon: Pickaxe,
-    count: "8+ Ürün",
+    icon: "🧰",
+    title: "Yalıtım",
+    description: "Isı ve su yalıtımı",
   },
   {
-    title: "Kum",
-    icon: Shield,
-    count: "15+ Ürün",
+    icon: "⚡",
+    title: "Elektrik",
+    description: "Elektrik malzemeleri",
   },
   {
-    title: "Çivi & Tel",
-    icon: Hammer,
-    count: "40+ Ürün",
+    icon: "🚿",
+    title: "Tesisat",
+    description: "Sıhhi tesisat ürünleri",
   },
 ];
 
 export default function Categories() {
   return (
-    <Section className="bg-slate-50">
-      <Container>
-        <SectionTitle
-          eyebrow="Kategoriler"
-          title="İhtiyacınız Olan Tüm Yapı Malzemeleri"
-          description="Türkiye'nin en geniş yapı malzemesi kataloğunu tek platformda keşfedin."
-        />
+    <section className="bg-white py-24">
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((category) => {
-            const Icon = category.icon;
+      <div className="mx-auto max-w-7xl px-6">
 
-            return (
-              <div
-                key={category.title}
-                className="group rounded-3xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-yellow-400 hover:shadow-2xl"
-              >
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-yellow-100 transition group-hover:bg-yellow-500">
-                  <Icon
-                    size={30}
-                    className="text-yellow-600 transition group-hover:text-white"
-                  />
-                </div>
+        <div className="mb-14">
 
-                <h3 className="mt-8 text-2xl font-bold text-slate-900">
-                  {category.title}
-                </h3>
+          <p className="font-bold uppercase tracking-[0.3em] text-yellow-500">
+            KATEGORİLER
+          </p>
 
-                <p className="mt-2 text-slate-500">
-                  {category.count}
-                </p>
+          <h2 className="mt-4 text-5xl font-black text-zinc-900">
+            Yapı Malzemeleri
+          </h2>
 
-                <button className="mt-8 font-semibold text-yellow-600 transition hover:translate-x-2">
-                  İncele →
-                </button>
-              </div>
-            );
-          })}
+          <p className="mt-4 max-w-2xl text-lg text-zinc-500">
+            İhtiyacınız olan tüm yapı malzemelerine tek platformdan ulaşın.
+          </p>
+
         </div>
-      </Container>
-    </Section>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+          {categories.map((item) => (
+            <div
+              key={item.title}
+              className="group rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-yellow-300 hover:shadow-2xl"
+            >
+              <div className="text-5xl">
+                {item.icon}
+              </div>
+
+              <h3 className="mt-6 text-2xl font-bold">
+                {item.title}
+              </h3>
+
+              <p className="mt-3 leading-7 text-zinc-500">
+                {item.description}
+              </p>
+
+              <button className="mt-8 font-bold text-yellow-500 transition group-hover:translate-x-2">
+                İncele →
+              </button>
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
   );
 }

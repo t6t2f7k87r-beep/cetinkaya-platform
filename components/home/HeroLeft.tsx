@@ -3,7 +3,7 @@ export default function HeroLeft() {
     <div className="max-w-2xl">
 
       <div className="inline-flex rounded-full bg-yellow-100 px-4 py-2 text-sm font-bold text-yellow-700">
-        🇹🇷 Türkiye'nin En Büyük Dijital Yapı Platformu
+        🇹🇷 Türkiye&apos;nin En Büyük Dijital Yapı Platformu
       </div>
 
       <h1 className="mt-8 text-7xl font-black leading-[0.95] tracking-tight text-zinc-900">
@@ -21,7 +21,7 @@ export default function HeroLeft() {
       <p className="mt-8 max-w-xl text-xl leading-9 text-zinc-600">
         Demir, çimento, gaz beton, tuğla, seramik, yalıtım ve
         binlerce yapı malzemesini tek platformdan inceleyin.
-        Türkiye'nin her yerine fiyat alın, karşılaştırın ve
+        Türkiye&apos;nin her yerine fiyat alın, karşılaştırın ve
         güvenle sipariş verin.
       </p>
 

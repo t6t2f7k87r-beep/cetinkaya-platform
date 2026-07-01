@@ -1,5 +1,4 @@
- import Container from "@/components/shared/Container";
-import HeroButtons from "./HeroButtons";
+ import HeroButtons from "./HeroButtons";
 import HeroRight from "./HeroRight";
 import HeroStats from "./HeroStats";
 
@@ -7,47 +6,54 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-amber-50 to-yellow-100">
 
-      <Container>
+      {/* Glow */}
+      <div className="absolute left-[-150px] top-0 h-[500px] w-[500px] rounded-full bg-yellow-300/20 blur-[120px]" />
 
-        <div className="mx-auto grid min-h-[88vh] max-w-7xl items-center gap-28 py-20 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="absolute right-[-180px] bottom-[-120px] h-[520px] w-[520px] rounded-full bg-amber-300/20 blur-[140px]" />
 
-          <div className="max-w-xl">
+      <div className="mx-auto flex min-h-[calc(100vh-96px)] max-w-7xl items-center justify-between gap-24 px-6">
 
-            <span className="inline-flex rounded-full border border-yellow-200 bg-yellow-100 px-5 py-2 text-sm font-semibold text-yellow-700">
-              Türkiye'nin En Büyük Dijital Yapı Platformu
+        {/* LEFT */}
+
+        <div className="max-w-2xl">
+
+          <div className="inline-flex rounded-full border border-yellow-200 bg-yellow-100 px-5 py-2 text-sm font-bold text-yellow-700">
+            🇹🇷 Türkiye&apos;nin En Büyük Dijital Yapı Platformu
+          </div>
+
+          <h1 className="mt-10 text-7xl font-black leading-[0.95] tracking-tight text-zinc-900">
+
+            İnşaatın
+
+            <br />
+
+            <span className="text-yellow-500">
+              Dijital Merkezi
             </span>
 
-            <h1 className="mt-8 text-5xl font-black leading-[0.95] tracking-tight text-zinc-900 lg:text-7xl">
-              İnşaatın
-              <br />
-              <span className="text-yellow-500">
-                Dijital Merkezi
-              </span>
-            </h1>
+          </h1>
 
-            <p className="mt-8 max-w-lg text-xl leading-9 text-zinc-600">
-              Demir, çimento, gaz beton, tuğla, seramik ve binlerce yapı
-              malzemesini tek platformdan keşfedin, fiyat alın ve Türkiye'nin
-              her yerine güvenle ulaştırın.
-            </p>
+          <p className="mt-10 max-w-xl text-xl leading-9 text-zinc-600">
 
-            <div className="mt-10">
-              <HeroButtons />
-            </div>
+            Demirden çimentoya...
 
-            <div className="mt-14">
-              <HeroStats />
-            </div>
+            Gaz betondan seramiğe...
 
-          </div>
+            Türkiye&apos;nin en kapsamlı yapı platformu.
 
-          <div className="flex justify-end">
-            <HeroRight />
-          </div>
+          </p>
+
+          <HeroButtons />
+
+          <HeroStats />
 
         </div>
 
-      </Container>
+        {/* RIGHT */}
+
+        <HeroRight />
+
+      </div>
 
     </section>
   );
