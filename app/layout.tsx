@@ -3,7 +3,7 @@ import LiveSupportWidget from "@/components/support/LiveSupportWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cetinkayayapi.com"),
+  metadataBase: new URL("https://www.cetinkayalarinsaat.com"),
 
   title: {
     default: "Çetinkayalar İnşaat Malzemeleri",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     description:
       "İnşaat malzemesi satışı, teklif, nakliye ve ödeme yönetimi",
 
-    url: "https://cetinkayayapi.com",
+    url: "https://www.cetinkayalarinsaat.com",
 
     siteName: "Çetinkayalar İnşaat",
 
