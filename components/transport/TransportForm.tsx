@@ -1,38 +1,40 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
+ import CitySelect from "./CitySelect";
+import VehicleSelect from "./VehicleSelect";
+import TonnageInput from "./TonnageInput";
 
 export default function TransportForm() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-xl">
+    <div className="rounded-[32px] bg-white p-8 shadow-xl">
 
-      <h3 className="text-2xl font-bold">
+      <h3 className="text-3xl font-black text-zinc-900">
         Nakliye Bilgileri
       </h3>
 
+      <p className="mt-2 text-zinc-500">
+        Bilgileri girin, yaklaşık taşıma maliyetini hesaplayın.
+      </p>
+
       <div className="mt-8 space-y-5">
 
-        <select className="w-full rounded-xl border p-4">
-          <option>Çıkış İli</option>
-        </select>
-
-        <select className="w-full rounded-xl border p-4">
-          <option>Varış İli</option>
-        </select>
-
-        <select className="w-full rounded-xl border p-4">
-          <option>Araç Tipi</option>
-        </select>
-
-        <input
-          type="number"
-          placeholder="Tonaj"
-          className="w-full rounded-xl border p-4"
+        <CitySelect
+          label="Nereden"
+          placeholder="Şehir seçiniz"
         />
 
-        <Button className="w-full">
+        <CitySelect
+          label="Nereye"
+          placeholder="Şehir seçiniz"
+        />
+
+        <VehicleSelect />
+
+        <TonnageInput />
+
+        <button
+          className="w-full rounded-2xl bg-gradient-to-r from-yellow-500 to-amber-500 py-4 text-lg font-bold text-white transition hover:shadow-xl"
+        >
           Hesapla
-        </Button>
+        </button>
 
       </div>
 

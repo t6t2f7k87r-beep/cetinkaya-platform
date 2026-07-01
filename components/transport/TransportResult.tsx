@@ -1,68 +1,67 @@
-import {
-  Clock3,
-  MapPinned,
-  Truck,
-  Wallet,
-} from "lucide-react";
-
-export default function TransportResult() {
+ export default function TransportResult() {
   return (
-    <div className="rounded-3xl bg-slate-900 p-8 text-white">
+    <div className="rounded-[32px] bg-zinc-900 p-8 text-white shadow-2xl">
 
-      <h3 className="text-2xl font-bold">
-        Tahmini Sonuç
-      </h3>
+      <div className="flex items-center justify-between">
 
-      <div className="mt-8 space-y-6">
+        <h3 className="text-3xl font-black">
+          Tahmini Sonuç
+        </h3>
 
-        <div className="flex items-center gap-4">
-          <Truck />
+        <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-bold text-green-400">
+          Güncel
+        </span>
 
-          <div>
-            <p className="text-sm text-slate-400">
-              Araç
-            </p>
+      </div>
 
-            <h4>Tır</h4>
-          </div>
+      <div className="mt-10 space-y-6">
+
+        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
+
+          <span className="text-zinc-400">
+            Mesafe
+          </span>
+
+          <span className="text-xl font-bold">
+            1.050 km
+          </span>
+
         </div>
 
-        <div className="flex items-center gap-4">
-          <MapPinned />
+        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
 
-          <div>
-            <p className="text-sm text-slate-400">
-              Mesafe
-            </p>
+          <span className="text-zinc-400">
+            Yaklaşık Süre
+          </span>
 
-            <h4>742 KM</h4>
-          </div>
+          <span className="text-xl font-bold">
+            14 Saat
+          </span>
+
         </div>
 
-        <div className="flex items-center gap-4">
-          <Clock3 />
+        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
 
-          <div>
-            <p className="text-sm text-slate-400">
-              Teslim Süresi
-            </p>
+          <span className="text-zinc-400">
+            Araç
+          </span>
 
-            <h4>1 Gün</h4>
-          </div>
+          <span className="text-xl font-bold">
+            Tır
+          </span>
+
         </div>
 
-        <div className="flex items-center gap-4">
-          <Wallet />
+        <div className="pt-6">
 
-          <div>
-            <p className="text-sm text-slate-400">
-              Tahmini Ücret
-            </p>
+          <p className="text-zinc-400">
+            Tahmini Nakliye Bedeli
+          </p>
 
-            <h2 className="text-4xl font-black text-yellow-400">
-              ₺18.450
-            </h2>
-          </div>
+          <h2 className="mt-3 text-6xl font-black text-yellow-400">
+            ₺18.750
+          </h2>
+
         </div>
 
       </div>
