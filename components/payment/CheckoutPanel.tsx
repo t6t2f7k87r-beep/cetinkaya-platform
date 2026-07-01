@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CreditCard, FileCheck2, ShieldCheck } from "lucide-react";
 
-import { products } from "@/data/products";
+import {
+  getManagedProducts,
+  recordSale,
+  STORE_EVENT,
+} from "@/lib/commerce-store";
 import { createPaymentIntent } from "@/services/payment";
 import { PaymentProvider } from "@/types/payment";
 
@@ -16,9 +20,23 @@ const providers: { label: string; value: PaymentProvider }[] = [
 export default function CheckoutPanel() {
   const [provider, setProvider] = useState<PaymentProvider>("iyzico");
   const [quantity, setQuantity] = useState(5);
-  const selectedProduct = products[0];
+  const [products, setProducts] = useState(() => getManagedProducts());
+  const [productId, setProductId] = useState(products[0].id);
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [status, setStatus] = useState("");
+  const selectedProduct =
+    products.find((product) => product.id === productId) ?? products[0];
 
-  const subtotal = selectedProduct.price * quantity;
+  useEffect(() => {
+    const refreshProducts = () => setProducts(getManagedProducts());
+
+    window.addEventListener(STORE_EVENT, refreshProducts);
+    return () => window.removeEventListener(STORE_EVENT, refreshProducts);
+  }, []);
+
+  const safeQuantity = Number.isFinite(quantity) ? Math.max(1, quantity) : 1;
+  const subtotal = selectedProduct.price * safeQuantity;
   const serviceFee = Math.round(subtotal * 0.015);
   const total = subtotal + serviceFee;
 
@@ -35,13 +53,12 @@ export default function CheckoutPanel() {
         </div>
 
         <h1 className="mt-6 text-4xl font-black text-slate-950">
-          Teklif ve Ödeme Altyapısı
+          Teklif Oluştur
         </h1>
 
         <p className="mt-4 leading-8 text-slate-600">
-          Bu ekran, teklif oluşturma ve ödeme sağlayıcısına hazır ödeme niyeti
-          üretme akışının ilk sürümüdür. Gerçek ödeme için sağlayıcı mağaza/API
-          bilgileri eklenecek.
+          Ürün, miktar ve müşteri bilgilerini seçerek satış teklifini hazırlayın.
+          Ödeme sağlayıcısı seçildiğinde sisteme hazır bir ödeme referansı üretilir.
         </p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -49,9 +66,17 @@ export default function CheckoutPanel() {
             <span className="text-sm font-bold text-slate-600">
               Ürün
             </span>
-            <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 font-semibold text-slate-950">
-              {selectedProduct.name}
-            </div>
+            <select
+              value={productId}
+              onChange={(event) => setProductId(Number(event.target.value))}
+              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 bg-white px-5 font-semibold text-slate-950 outline-none transition focus:border-red-700"
+            >
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name} - {product.brand}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label className="block">
@@ -63,6 +88,30 @@ export default function CheckoutPanel() {
               type="number"
               value={quantity}
               onChange={(event) => setQuantity(Number(event.target.value))}
+              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 px-5 font-semibold outline-none transition focus:border-red-700"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-bold text-slate-600">
+              Müşteri / Firma
+            </span>
+            <input
+              value={customerName}
+              onChange={(event) => setCustomerName(event.target.value)}
+              placeholder="Firma veya müşteri adı"
+              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 px-5 font-semibold outline-none transition focus:border-red-700"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-bold text-slate-600">
+              Telefon
+            </span>
+            <input
+              value={customerPhone}
+              onChange={(event) => setCustomerPhone(event.target.value)}
+              placeholder="05xx xxx xx xx"
               className="mt-2 h-14 w-full rounded-2xl border border-slate-200 px-5 font-semibold outline-none transition focus:border-red-700"
             />
           </label>
@@ -129,7 +178,14 @@ export default function CheckoutPanel() {
           <div className="flex justify-between text-slate-600">
             <span>Miktar</span>
             <strong className="text-slate-950">
-              {quantity} {selectedProduct.unit}
+              {safeQuantity} {selectedProduct.unit}
+            </strong>
+          </div>
+
+          <div className="flex justify-between text-slate-600">
+            <span>Teslimat</span>
+            <strong className="text-right text-slate-950">
+              {selectedProduct.deliveryTime}
             </strong>
           </div>
 
@@ -151,9 +207,36 @@ export default function CheckoutPanel() {
           </div>
         </div>
 
-        <button className="mt-8 h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white shadow-xl shadow-red-900/20">
-          Teklifi Kaydet
+        <button
+          type="button"
+          onClick={() => {
+            const sale = recordSale({
+              productId: selectedProduct.id,
+              quantity: safeQuantity,
+              customerName,
+              customerPhone,
+              total,
+            });
+
+            setProducts(getManagedProducts());
+            setStatus(
+              `${sale.id} kaydedildi. ${sale.shipmentId} sevk kaydı açıldı${
+                sale.bundleIds.length > 0
+                  ? `, ${sale.bundleIds.length} demir bağı stoktan düşüldü.`
+                  : "."
+              }`,
+            );
+          }}
+          className="mt-8 h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white shadow-xl shadow-red-900/20"
+        >
+          Satışı Onayla ve Sevke Düş
         </button>
+
+        {status ? (
+          <p className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            {status}
+          </p>
+        ) : null}
       </aside>
     </div>
   );

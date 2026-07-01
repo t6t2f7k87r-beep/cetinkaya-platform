@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CartesianGrid,
   Line,
@@ -11,9 +11,8 @@ import {
   YAxis,
 } from "recharts";
 
-import { products } from "@/data/products";
+import { getManagedProducts, STORE_EVENT } from "@/lib/commerce-store";
 
-const trackedProducts = products.slice(0, 5);
 const lineColors = ["#b91c1c", "#0f172a", "#2563eb", "#dc2626", "#64748b"];
 
 function formatPrice(value: number) {
@@ -21,35 +20,83 @@ function formatPrice(value: number) {
 }
 
 export default function MarketDashboard() {
+  const [trackedProducts, setTrackedProducts] = useState(() => getManagedProducts());
   const [activeSlug, setActiveSlug] = useState(trackedProducts[0].slug);
-  const activeProduct =
-    trackedProducts.find((product) => product.slug === activeSlug) ?? trackedProducts[0];
+  const [tick, setTick] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTick((value) => value + 1);
+      setLastUpdated(new Date());
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const refreshProducts = () => {
+      const nextProducts = getManagedProducts();
+      setTrackedProducts(nextProducts);
+      setActiveSlug((current) => nextProducts.some((product) => product.slug === current)
+        ? current
+        : nextProducts[0].slug);
+    };
+
+    window.addEventListener(STORE_EVENT, refreshProducts);
+    return () => window.removeEventListener(STORE_EVENT, refreshProducts);
+  }, []);
+
+  const liveProducts = useMemo(
+    () =>
+      trackedProducts.map((product, productIndex) => {
+        const wave = Math.sin((tick + productIndex + 1) * 0.75);
+        const movement = Math.round(product.price * wave * 0.003);
+        const livePrice = Math.max(1, product.price + movement);
+
+        return {
+          ...product,
+          price: livePrice,
+          priceHistory: [
+            ...product.priceHistory.slice(0, -1),
+            {
+              label: "Canlı",
+              price: livePrice,
+            },
+          ],
+        };
+      }),
+    [tick, trackedProducts],
+  );
+
+  const liveActiveProduct =
+    liveProducts.find((product) => product.slug === activeSlug) ?? liveProducts[0];
 
   const chartData = useMemo(
     () =>
-      activeProduct.priceHistory.map((point, index) => {
+      liveActiveProduct.priceHistory.map((point, index) => {
         const row: Record<string, string | number> = {
           day: point.label,
         };
 
-        trackedProducts.forEach((product) => {
+        liveProducts.forEach((product) => {
           row[product.slug] = product.priceHistory[index]?.price ?? product.price;
         });
 
         return row;
       }),
-    [activeProduct],
+    [liveActiveProduct, liveProducts],
   );
 
-  const firstPrice = activeProduct.priceHistory[0]?.price ?? activeProduct.price;
+  const firstPrice = liveActiveProduct.priceHistory[0]?.price ?? liveActiveProduct.price;
   const lastPrice =
-    activeProduct.priceHistory.at(-1)?.price ?? activeProduct.price;
+    liveActiveProduct.priceHistory.at(-1)?.price ?? liveActiveProduct.price;
   const changeRate = ((lastPrice - firstPrice) / firstPrice) * 100;
-  const minPrice = Math.min(...activeProduct.priceHistory.map((item) => item.price));
-  const maxPrice = Math.max(...activeProduct.priceHistory.map((item) => item.price));
+  const minPrice = Math.min(...liveActiveProduct.priceHistory.map((item) => item.price));
+  const maxPrice = Math.max(...liveActiveProduct.priceHistory.map((item) => item.price));
 
   return (
-    <section className="bg-white py-20 lg:py-24">
+    <section id="canli-piyasa" className="bg-white py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -64,14 +111,21 @@ export default function MarketDashboard() {
 
           <p className="max-w-xl text-lg leading-8 text-slate-600">
             Günlük fiyat eğilimlerini izleyin, teklif zamanlamasını ve satın alma
-            kararlarını daha net planlayın.
+            kararlarını daha net planlayın. Son güncelleme:{" "}
+            <strong className="text-slate-950">
+              {lastUpdated.toLocaleTimeString("tr-TR", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })}
+            </strong>
           </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
             <div className="mb-6 flex flex-wrap gap-2">
-              {trackedProducts.map((product) => (
+              {liveProducts.map((product) => (
                 <button
                   key={product.slug}
                   type="button"
@@ -100,7 +154,7 @@ export default function MarketDashboard() {
                   <Tooltip
                     formatter={(value, name) => [
                       formatPrice(Number(value)),
-                      trackedProducts.find((product) => product.slug === name)?.category ??
+                      liveProducts.find((product) => product.slug === name)?.category ??
                         name,
                     ]}
                     contentStyle={{
@@ -109,13 +163,13 @@ export default function MarketDashboard() {
                       boxShadow: "0 16px 40px rgba(15, 23, 42, 0.12)",
                     }}
                   />
-                  {trackedProducts.map((product, index) => (
+                  {liveProducts.map((product, index) => (
                     <Line
                       key={product.slug}
                       type="monotone"
                       dataKey={product.slug}
                       name={product.category}
-                      stroke={lineColors[index]}
+                      stroke={lineColors[index % lineColors.length]}
                       strokeWidth={product.slug === activeSlug ? 4 : 2}
                       dot={product.slug === activeSlug}
                       opacity={product.slug === activeSlug ? 1 : 0.35}
@@ -129,22 +183,22 @@ export default function MarketDashboard() {
           <div className="grid gap-4">
             {[
               {
-                label: activeProduct.category,
+                label: liveActiveProduct.category,
                 value: formatPrice(lastPrice),
-                unit: activeProduct.unit,
+                unit: liveActiveProduct.unit,
                 change: `${changeRate >= 0 ? "+" : ""}%${changeRate.toFixed(1)}`,
               },
               {
                 label: "Haftalık Dip",
                 value: formatPrice(minPrice),
-                unit: activeProduct.unit,
-                change: activeProduct.location,
+                unit: liveActiveProduct.unit,
+                change: liveActiveProduct.location,
               },
               {
                 label: "Haftalık Tepe",
                 value: formatPrice(maxPrice),
-                unit: activeProduct.unit,
-                change: activeProduct.deliveryTime,
+                unit: liveActiveProduct.unit,
+                change: liveActiveProduct.deliveryTime,
               },
             ].map((item) => (
               <article

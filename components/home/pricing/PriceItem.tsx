@@ -1,4 +1,5 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ProductPrice } from "@/data/prices";
@@ -9,8 +10,17 @@ interface Props {
 
 export default function PriceItem({ item }: Props) {
   const positive = item.change >= 0;
+  const category =
+    item.name.includes("Demir")
+      ? "Demir"
+      : item.name.includes("Çimento")
+        ? "Çimento"
+        : item.name.includes("Gaz")
+          ? "Gaz Beton"
+          : "Tuğla";
 
   return (
+    <Link href={`/urunler?kategori=${encodeURIComponent(category)}`}>
     <Card className="border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-950/10">
       <CardContent className="space-y-5 p-6">
 
@@ -68,5 +78,6 @@ export default function PriceItem({ item }: Props) {
 
       </CardContent>
     </Card>
+    </Link>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-import { products } from "@/data/products";
+import { getManagedProducts, STORE_EVENT } from "@/lib/commerce-store";
 
 import CategorySidebar from "./CategorySidebar";
 import ProductGrid from "./ProductGrid";
@@ -10,12 +11,22 @@ import ProductPagination from "./ProductPagination";
 import ProductToolbar from "./ProductToolbar";
 
 export default function ProductCatalog() {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("kategori") ?? "Tümü";
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("Tümü");
+  const [category, setCategory] = useState(initialCategory);
+  const [products, setProducts] = useState(() => getManagedProducts());
+
+  useEffect(() => {
+    const refreshProducts = () => setProducts(getManagedProducts());
+
+    window.addEventListener(STORE_EVENT, refreshProducts);
+    return () => window.removeEventListener(STORE_EVENT, refreshProducts);
+  }, []);
 
   const categories = useMemo(() => {
     return ["Tümü", ...Array.from(new Set(products.map((product) => product.category)))];
-  }, []);
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("tr-TR");
@@ -38,7 +49,7 @@ export default function ProductCatalog() {
 
       return categoryMatch && queryMatch;
     });
-  }, [category, query]);
+  }, [category, products, query]);
 
   return (
     <div className="mt-12 grid gap-8 lg:grid-cols-[280px_1fr]">

@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function AiCard() {
   return (
@@ -18,9 +19,12 @@ export default function AiCard() {
         ürünleri karşılaştırın ve en uygun tedarikçiyi bulun.
       </p>
 
-      <button className="mt-5 rounded-2xl bg-red-700 px-6 py-3 font-bold text-white transition hover:bg-red-600">
+      <Link
+        href="/ai"
+        className="mt-5 inline-flex rounded-2xl bg-red-700 px-6 py-3 font-bold text-white transition hover:bg-red-600"
+      >
         AI&apos;ı Başlat
-      </button>
+      </Link>
 
     </div>
   );

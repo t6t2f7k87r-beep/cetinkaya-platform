@@ -1,17 +1,49 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-import { cities, vehicles } from "@/data/transport";
+import { cities } from "@/data/transport";
+import {
+  getManagedVehicles,
+  recordTransportOrder,
+  STORE_EVENT,
+} from "@/lib/commerce-store";
 import { calculateTransportQuote } from "@/lib/transport";
 import TransportForm from "./TransportForm";
 import TransportResult from "./TransportResult";
 
 export default function TransportCalculator() {
-  const [fromCityId, setFromCityId] = useState(34);
-  const [toCityId, setToCityId] = useState(6);
+  const searchParams = useSearchParams();
+  const initialFromCity =
+    cities.find(
+      (city) =>
+        city.name.toLocaleLowerCase("tr-TR") ===
+        (searchParams.get("nereden") ?? "").toLocaleLowerCase("tr-TR"),
+    )?.id ?? 44;
+  const initialToCity =
+    cities.find(
+      (city) =>
+        city.name.toLocaleLowerCase("tr-TR") ===
+        (searchParams.get("nereye") ?? "").toLocaleLowerCase("tr-TR"),
+    )?.id ?? 6;
+  const initialTonnage = Number(searchParams.get("tonaj")) || 24;
+  const [fromCityId, setFromCityId] = useState(initialFromCity);
+  const [toCityId, setToCityId] = useState(initialToCity);
   const [vehicleId, setVehicleId] = useState(3);
-  const [tonnage, setTonnage] = useState(24);
+  const [tonnage, setTonnage] = useState(initialTonnage);
+  const [vehicles, setVehicles] = useState(() => getManagedVehicles());
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [note, setNote] = useState("");
+  const [savedMessage, setSavedMessage] = useState("");
+
+  useEffect(() => {
+    const refreshVehicles = () => setVehicles(getManagedVehicles());
+
+    window.addEventListener(STORE_EVENT, refreshVehicles);
+    return () => window.removeEventListener(STORE_EVENT, refreshVehicles);
+  }, []);
 
   const selectedVehicle =
     vehicles.find((vehicle) => vehicle.id === vehicleId) ?? vehicles[0];
@@ -73,7 +105,31 @@ export default function TransportCalculator() {
             onTonnageChange={setTonnage}
           />
 
-          <TransportResult result={result} warning={warning} />
+          <TransportResult
+            result={result}
+            warning={warning}
+            customerName={customerName}
+            customerPhone={customerPhone}
+            note={note}
+            savedMessage={savedMessage}
+            onCustomerNameChange={setCustomerName}
+            onCustomerPhoneChange={setCustomerPhone}
+            onNoteChange={setNote}
+            onSave={() => {
+              if (!result) {
+                return;
+              }
+
+              const order = recordTransportOrder({
+                result,
+                customerName,
+                customerPhone,
+                note,
+              });
+
+              setSavedMessage(`${order.id} kaydedildi. Admin panelinde nakliye kayıtlarına eklendi.`);
+            }}
+          />
         </div>
       </div>
     </section>

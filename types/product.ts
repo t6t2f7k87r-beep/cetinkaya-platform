@@ -8,6 +8,8 @@ export type Product = {
   image: string;
   unit: string;
   stock: boolean;
+  stockQuantity: number;
+  steelBundleCount?: number;
   description: string;
   location: string;
   deliveryTime: string;

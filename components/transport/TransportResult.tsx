@@ -3,9 +3,28 @@ import { TransportResult as Result } from "@/types/transport";
 type Props = {
   result: Result | null;
   warning?: string;
+  customerName: string;
+  customerPhone: string;
+  note: string;
+  savedMessage?: string;
+  onCustomerNameChange: (value: string) => void;
+  onCustomerPhoneChange: (value: string) => void;
+  onNoteChange: (value: string) => void;
+  onSave: () => void;
 };
 
-export default function TransportResult({ result, warning }: Props) {
+export default function TransportResult({
+  result,
+  warning,
+  customerName,
+  customerPhone,
+  note,
+  savedMessage,
+  onCustomerNameChange,
+  onCustomerPhoneChange,
+  onNoteChange,
+  onSave,
+}: Props) {
   return (
     <div className="rounded-[32px] bg-slate-950 p-8 text-white shadow-2xl">
       <div className="flex items-center justify-between">
@@ -85,6 +104,44 @@ export default function TransportResult({ result, warning }: Props) {
             ₺{result.price.toLocaleString("tr-TR")}
           </h2>
         </div>
+
+          <div className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+            <input
+              value={customerName}
+              onChange={(event) => onCustomerNameChange(event.target.value)}
+              placeholder="Müşteri / firma adı"
+              className="h-12 rounded-xl border border-white/10 bg-white px-4 font-semibold text-slate-950 outline-none"
+            />
+
+            <input
+              value={customerPhone}
+              onChange={(event) => onCustomerPhoneChange(event.target.value)}
+              placeholder="Telefon"
+              className="h-12 rounded-xl border border-white/10 bg-white px-4 font-semibold text-slate-950 outline-none"
+            />
+
+            <textarea
+              value={note}
+              onChange={(event) => onNoteChange(event.target.value)}
+              placeholder="Yük detayı, teslimat notu veya şantiye adresi"
+              rows={3}
+              className="rounded-xl border border-white/10 bg-white px-4 py-3 font-semibold text-slate-950 outline-none"
+            />
+
+            <button
+              type="button"
+              onClick={onSave}
+              className="h-12 rounded-xl bg-red-700 font-black text-white transition hover:bg-red-800"
+            >
+              Nakliye Teklifini Kaydet
+            </button>
+
+            {savedMessage ? (
+              <p className="rounded-xl bg-green-500/15 px-4 py-3 text-sm font-bold text-green-200">
+                {savedMessage}
+              </p>
+            ) : null}
+          </div>
         </div>
       ) : (
         <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-slate-300">

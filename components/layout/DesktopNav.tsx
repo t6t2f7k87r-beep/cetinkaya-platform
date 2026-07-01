@@ -24,6 +24,14 @@ const links = [
     href: "/ai",
   },
   {
+    title: "E-Fatura",
+    href: "/efatura",
+  },
+  {
+    title: "Admin",
+    href: "/admin",
+  },
+  {
     title: "İletişim",
     href: "/iletisim",
   },
@@ -31,7 +39,7 @@ const links = [
 
 export default function DesktopNav() {
   return (
-    <nav className="hidden lg:flex items-center gap-10">
+    <nav className="hidden lg:flex items-center gap-7">
       {links.map((item) => (
         <Link
           key={item.href}

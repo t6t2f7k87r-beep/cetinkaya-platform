@@ -1,8 +1,12 @@
 import { TrendingUp } from "lucide-react";
+import Link from "next/link";
 
 export default function SteelPriceCard() {
   return (
-    <div className="rounded-3xl bg-gradient-to-r from-red-700 to-slate-950 p-6 text-white shadow-2xl shadow-slate-950/20">
+    <Link
+      href="/urunler?kategori=Demir"
+      className="block rounded-3xl bg-gradient-to-r from-red-700 to-slate-950 p-6 text-white shadow-2xl shadow-slate-950/20 transition hover:-translate-y-1"
+    >
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/15">
@@ -27,6 +31,6 @@ export default function SteelPriceCard() {
           +%1.8
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

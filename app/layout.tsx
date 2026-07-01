@@ -1,11 +1,12 @@
- import type { Metadata } from "next";
+import type { Metadata } from "next";
+import LiveSupportWidget from "@/components/support/LiveSupportWidget";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cetinkayayapi.com"),
 
   title: {
-    default: "Çetinkaya Yapı Platformu",
+    default: "Çetinkaya İnşaat Malzemeleri",
     template: "%s | Çetinkaya Yapı",
   },
 
@@ -40,10 +41,10 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Çetinkaya Yapı Platformu",
+    title: "Çetinkaya İnşaat Malzemeleri",
 
     description:
-      "Türkiye'nin Akıllı Yapı Malzemeleri Platformu",
+      "İnşaat malzemesi satışı, teklif, nakliye ve ödeme yönetimi",
 
     url: "https://cetinkayayapi.com",
 
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     title: "Çetinkaya Yapı",
 
     description:
-      "Türkiye'nin Akıllı Yapı Malzemeleri Platformu",
+      "İnşaat malzemesi satışı, teklif, nakliye ve ödeme yönetimi",
   },
 };
 
@@ -71,7 +72,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        {children}
+        <LiveSupportWidget />
+      </body>
     </html>
   );
 }

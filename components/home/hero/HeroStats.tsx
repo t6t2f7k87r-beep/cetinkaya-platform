@@ -1,15 +1,15 @@
  const stats = [
   {
-    value: "10.000+",
-    label: "Ürün",
+    value: "10+",
+    label: "Yıl Tecrübe",
   },
   {
-    value: "500+",
-    label: "Tedarikçi",
+    value: "Malatya",
+    label: "Merkez",
   },
   {
-    value: "81",
-    label: "İl",
+    value: "%100",
+    label: "Memnuniyet Odağı",
   },
 ];
 

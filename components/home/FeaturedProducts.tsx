@@ -1,7 +1,22 @@
- import ProductCard from "./products/ProductCard";
-import { featuredProducts } from "@/data/products";
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { getManagedProducts, STORE_EVENT } from "@/lib/commerce-store";
+import ProductCard from "./products/ProductCard";
 
 export default function FeaturedProducts() {
+  const [featuredProducts, setFeaturedProducts] = useState(() =>
+    getManagedProducts(),
+  );
+
+  useEffect(() => {
+    const refreshProducts = () => setFeaturedProducts(getManagedProducts());
+
+    window.addEventListener(STORE_EVENT, refreshProducts);
+    return () => window.removeEventListener(STORE_EVENT, refreshProducts);
+  }, []);
+
   return (
     <section className="bg-slate-50 py-24">
       <div className="mx-auto max-w-7xl px-6">

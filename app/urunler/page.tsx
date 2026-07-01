@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import ProductCatalog from "@/components/home/products/ProductCatalog";
 import Navbar from "@/components/layout/Navbar";
 
@@ -22,7 +24,9 @@ export default function ProductsPage() {
             </p>
           </div>
 
-          <ProductCatalog />
+          <Suspense fallback={<div className="mt-12 text-slate-600">Ürünler yükleniyor...</div>}>
+            <ProductCatalog />
+          </Suspense>
         </section>
       </main>
     </>

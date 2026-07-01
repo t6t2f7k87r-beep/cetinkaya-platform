@@ -20,24 +20,34 @@
     description: "Ytong ve gaz beton ürünleri",
   },
   {
-    icon: "🪟",
-    title: "PVC",
-    description: "Kapı ve pencere sistemleri",
+    icon: "🧰",
+    title: "Tutkal",
+    description: "Seramik ve fayans yapıştırıcıları",
+  },
+  {
+    icon: "▦",
+    title: "Bims",
+    description: "Hafif blok ve duvar ürünleri",
+  },
+  {
+    icon: "⬜",
+    title: "Ytong",
+    description: "Ytong gaz beton blokları",
+  },
+  {
+    icon: "⚪",
+    title: "Kireç",
+    description: "Harç, sıva ve badana kireci",
+  },
+  {
+    icon: "🧰",
+    title: "Alçı",
+    description: "Alçı sıva ve iç mekan uygulama ürünleri",
   },
   {
     icon: "🧰",
     title: "Yalıtım",
     description: "Isı ve su yalıtımı",
-  },
-  {
-    icon: "⚡",
-    title: "Elektrik",
-    description: "Elektrik malzemeleri",
-  },
-  {
-    icon: "🚿",
-    title: "Tesisat",
-    description: "Sıhhi tesisat ürünleri",
   },
 ];
 
@@ -58,7 +68,7 @@ export default function Categories() {
           </h2>
 
           <p className="mt-4 max-w-2xl text-lg text-slate-600">
-            İhtiyacınız olan tüm yapı malzemelerine tek platformdan ulaşın.
+            İhtiyacınız olan tüm yapı malzemelerini satış kataloğundan inceleyin.
           </p>
 
         </div>
@@ -82,9 +92,12 @@ export default function Categories() {
                 {item.description}
               </p>
 
-              <button className="mt-8 font-bold text-red-700 transition group-hover:translate-x-2">
+              <a
+                href={`/urunler?kategori=${encodeURIComponent(item.title)}`}
+                className="mt-8 inline-block font-bold text-red-700 transition group-hover:translate-x-2"
+              >
                 İncele →
-              </button>
+              </a>
             </div>
           ))}
 

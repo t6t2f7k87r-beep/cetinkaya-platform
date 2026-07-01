@@ -1,8 +1,17 @@
+"use client";
+
 import { LockKeyhole } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
   return (
     <>
       <Navbar />
@@ -14,30 +23,57 @@ export default function LoginPage() {
             </div>
 
             <h1 className="mt-6 text-3xl font-black text-slate-950">
-              Platform Girişi
+              Satış Programı Girişi
             </h1>
 
             <p className="mt-3 leading-7 text-slate-600">
-              Bayi, tedarikçi ve yönetim paneli giriş altyapısı burada
-              konumlanacak.
+              Teklifleri, ürünleri ve müşteri taleplerini yönetmek için
+              personel veya bayi hesabınızla giriş yapın.
             </p>
 
-            <div className="mt-8 space-y-4">
+            <form
+              className="mt-8 space-y-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                if (email && password) {
+                  localStorage.setItem("cetinkaya-session", "active");
+                  setMessage("Giriş başarılı. Admin paneline yönlendiriliyorsunuz.");
+                  router.push("/admin");
+                  return;
+                }
+
+                setMessage("Lütfen e-posta ve şifre alanlarını doldurun.");
+              }}
+            >
               <input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="E-posta"
+                type="email"
                 className="h-14 w-full rounded-2xl border border-slate-200 px-5 outline-none transition focus:border-red-700"
               />
 
               <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 placeholder="Şifre"
                 type="password"
                 className="h-14 w-full rounded-2xl border border-slate-200 px-5 outline-none transition focus:border-red-700"
               />
 
-              <button className="h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white">
+              <button
+                type="submit"
+                className="h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white"
+              >
                 Giriş Yap
               </button>
-            </div>
+
+              {message ? (
+                <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                  {message}
+                </p>
+              ) : null}
+            </form>
           </div>
         </section>
       </main>

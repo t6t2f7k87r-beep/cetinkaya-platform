@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { Product } from "@/types/product";
 import { ArrowRight, MapPin, Truck } from "lucide-react";
@@ -49,6 +50,11 @@ export default function ProductCard({ product }: Props) {
             <Truck size={16} className="text-red-700" />
             {product.deliveryTime}
           </div>
+
+          <div className="font-bold text-slate-700">
+            Stok: {product.stockQuantity.toLocaleString("tr-TR")} {product.unit}
+            {product.steelBundleCount ? ` / ${product.steelBundleCount} bağ` : ""}
+          </div>
         </div>
 
         <div className="mt-8 flex items-end justify-between">
@@ -66,12 +72,13 @@ export default function ProductCard({ product }: Props) {
             </p>
           </div>
 
-          <button
+          <Link
+            href={`/urunler?kategori=${encodeURIComponent(product.category)}`}
             className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-110 group-hover:bg-red-700"
             aria-label={`${product.name} detayına git`}
           >
             <ArrowRight size={20} />
-          </button>
+          </Link>
         </div>
       </div>
     </article>

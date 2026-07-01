@@ -16,7 +16,7 @@ export default function NavLogo() {
         </h2>
 
         <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-500">
-          Yapı Platformu
+          Malzeme Satış
         </p>
       </div>
     </Link>

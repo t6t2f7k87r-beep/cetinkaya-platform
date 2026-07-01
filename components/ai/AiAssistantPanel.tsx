@@ -6,9 +6,9 @@ import { BrainCircuit, Send, Sparkles } from "lucide-react";
 import { AiAnswer, buildLocalAiAnswer } from "@/lib/ai";
 
 const suggestions = [
-  "120 m² kaba inşaat için demir ve çimento öner",
-  "Gaz beton ile tuğla maliyetini karşılaştır",
-  "İstanbul'dan Ankara'ya 12 ton demir nakliye planı çıkar",
+  "Malatya'dan Ankara'ya 12 ton 12 mm demir nakliye planı çıkar",
+  "120 m² kaba inşaat için tuğla, çimento ve kireç öner",
+  "10'luk tuğla ile bims maliyetini karşılaştır",
 ];
 
 export default function AiAssistantPanel() {
@@ -153,7 +153,8 @@ export default function AiAssistantPanel() {
                   </h3>
 
                   <p className="mt-1 text-sm text-slate-400">
-                    {product.brand} · {product.deliveryTime}
+                    {product.brand} · {product.deliveryTime} · Stok:{" "}
+                    {product.stockQuantity.toLocaleString("tr-TR")} {product.unit}
                   </p>
                 </div>
 
@@ -164,6 +165,29 @@ export default function AiAssistantPanel() {
             </div>
           ))}
         </div>
+
+        {answer.transportEstimate ? (
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+            <p className="text-sm font-bold uppercase text-slate-400">
+              Nakliye Tahmini
+            </p>
+
+            <h3 className="mt-2 text-xl font-black">
+              {answer.transportEstimate.route}
+            </h3>
+
+            <div className="mt-4 grid gap-3 text-sm text-slate-300 sm:grid-cols-2">
+              <span>{answer.transportEstimate.vehicle}</span>
+              <span>{answer.transportEstimate.tonnage} ton</span>
+              <span>{answer.transportEstimate.distance} km</span>
+              <span>{answer.transportEstimate.duration}</span>
+              <span>{answer.transportEstimate.trips} sefer</span>
+              <strong className="text-red-300">
+                ₺{answer.transportEstimate.price.toLocaleString("tr-TR")}
+              </strong>
+            </div>
+          </div>
+        ) : null}
 
         <div className="mt-6 rounded-2xl bg-white p-5 text-slate-950">
           <p className="text-sm font-bold uppercase text-slate-500">
@@ -177,6 +201,20 @@ export default function AiAssistantPanel() {
           <p className="mt-3 text-sm leading-6 text-slate-600">
             {answer.nextStep}
           </p>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+          <p className="text-sm font-bold uppercase text-slate-400">
+            Yapılacaklar
+          </p>
+
+          <div className="mt-3 space-y-2">
+            {answer.actionItems.map((item) => (
+              <p key={item} className="text-sm leading-6 text-slate-300">
+                • {item}
+              </p>
+            ))}
+          </div>
         </div>
       </section>
     </div>

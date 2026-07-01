@@ -4,26 +4,30 @@ const highlights = [
   {
     icon: BarChart3,
     title: "Canlı fiyat merkezi",
+    href: "/#canli-piyasa",
     description:
       "Demir, çimento, gaz beton ve temel yapı malzemelerinde güncel fiyat takibi.",
   },
   {
     icon: Truck,
     title: "Akıllı nakliye hesabı",
+    href: "/nakliye",
     description:
       "Şehir, tonaj ve araç tipine göre hızlı teslimat ve yaklaşık maliyet planı.",
   },
   {
     icon: BrainCircuit,
     title: "AI yapı asistanı",
+    href: "/ai",
     description:
       "Malzeme seçimi, yaklaşık metraj ve teklif hazırlığında akıllı yönlendirme.",
   },
   {
     icon: ShieldCheck,
-    title: "Güvenilir tedarik ağı",
+    title: "Müşteri memnuniyeti",
+    href: "/iletisim",
     description:
-      "Stok, kalite ve teslimat süreçleri kontrol edilen profesyonel ürün ağı.",
+      "10 seneyi aşkın hizmet tecrübesiyle hızlı dönüş, doğru ürün ve güvenilir teslimat.",
   },
 ];
 
@@ -34,7 +38,7 @@ export default function PlatformHighlights() {
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="font-bold uppercase tracking-[0.25em] text-red-300">
-              Platform Gücü
+              Satış Programı
             </p>
 
             <h2 className="mt-4 text-4xl font-black leading-tight lg:text-5xl">
@@ -43,7 +47,7 @@ export default function PlatformHighlights() {
           </div>
 
           <p className="text-lg leading-8 text-slate-300">
-            Çetinkaya Yapı Platformu, şantiye ihtiyaçlarını hızlandırmak için
+            Malatya merkezli Çetinkaya inşaat malzemeleri satış programı, şantiye ihtiyaçlarını hızlandırmak için
             ürün kataloğu, canlı fiyat, lojistik ve yapay zeka destekli teklif
             akışını tek yerde toplar.
           </p>
@@ -54,8 +58,9 @@ export default function PlatformHighlights() {
             const Icon = item.icon;
 
             return (
-              <article
+              <a
                 key={item.title}
+                href={item.href}
                 className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-red-300/40 hover:bg-white/[0.07]"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-700 text-white">
@@ -69,7 +74,7 @@ export default function PlatformHighlights() {
                 <p className="mt-3 leading-7 text-slate-300">
                   {item.description}
                 </p>
-              </article>
+              </a>
             );
           })}
         </div>

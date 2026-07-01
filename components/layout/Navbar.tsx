@@ -1,5 +1,6 @@
  import Container from "@/components/shared/Container";
 import DesktopNav from "./DesktopNav";
+import MobileNav from "./MobileNav";
 import NavActions from "./NavActions";
 import NavLogo from "./NavLogo";
 
@@ -13,6 +14,8 @@ export default function Navbar() {
           <DesktopNav />
 
           <NavActions />
+
+          <MobileNav />
         </div>
       </Container>
     </header>
