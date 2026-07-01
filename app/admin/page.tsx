@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
+import { endAdminSession, isAdminSessionActive } from "@/lib/auth";
 import {
   addSteelBundle,
   getIdisSettings,
@@ -30,9 +31,7 @@ import {
 } from "@/lib/commerce-store";
 
 export default function AdminPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    () => typeof window !== "undefined" && localStorage.getItem("cetinkaya-session") === "active",
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(() => isAdminSessionActive());
   const [products, setProducts] = useState(() => getManagedProducts());
   const [vehicles, setVehicles] = useState(() => getManagedVehicles());
   const [sales, setSales] = useState(() => getSales());
@@ -159,7 +158,7 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={() => {
-                  localStorage.removeItem("cetinkaya-session");
+                  endAdminSession();
                   setIsLoggedIn(false);
                 }}
                 className="rounded-2xl border border-slate-200 bg-white px-5 py-3 font-bold text-slate-700 transition hover:border-red-200 hover:text-red-700"
