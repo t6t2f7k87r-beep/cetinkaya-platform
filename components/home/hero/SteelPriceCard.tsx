@@ -2,10 +2,10 @@ import { TrendingUp } from "lucide-react";
 
 export default function SteelPriceCard() {
   return (
-    <div className="rounded-3xl bg-gradient-to-r from-yellow-500 to-amber-500 p-6 text-white shadow-2xl">
+    <div className="rounded-3xl bg-gradient-to-r from-red-700 to-slate-950 p-6 text-white shadow-2xl shadow-slate-950/20">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/20">
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/15">
             <TrendingUp size={22} />
           </div>
 
@@ -23,7 +23,7 @@ export default function SteelPriceCard() {
 
         </div>
 
-        <div className="shrink-0 rounded-full bg-white/20 px-4 py-2 text-sm font-bold">
+        <div className="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-bold">
           +%1.8
         </div>
       </div>

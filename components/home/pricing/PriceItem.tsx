@@ -11,14 +11,14 @@ export default function PriceItem({ item }: Props) {
   const positive = item.change >= 0;
 
   return (
-    <Card className="transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <Card className="border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-950/10">
       <CardContent className="space-y-5 p-6">
 
         <div className="flex items-center justify-between">
 
           <div>
 
-            <h3 className="font-bold">
+            <h3 className="font-bold text-slate-950">
               {item.name}
             </h3>
 
@@ -46,7 +46,7 @@ export default function PriceItem({ item }: Props) {
 
         <div>
 
-          <h2 className="text-4xl font-black">
+          <h2 className="text-4xl font-black text-slate-950">
             ₺{item.price.toLocaleString("tr-TR")}
           </h2>
 

@@ -2,20 +2,23 @@
 
 :root {
   /* Brand */
-  --primary: #f4b400;
-  --primary-foreground: #111827;
+  --primary: #c1121f;
+  --primary-foreground: #ffffff;
+  --navy: #0b1f3a;
+  --navy-muted: #12355f;
+  --accent: #e11d2e;
 
   /* Backgrounds */
-  --background: #f8fafc;
+  --background: #f7f9fc;
   --surface: #ffffff;
-  --surface-muted: #f1f5f9;
+  --surface-muted: #eef3f9;
 
   /* Text */
-  --foreground: #111827;
-  --muted-foreground: #6b7280;
+  --foreground: #0b1f3a;
+  --muted-foreground: #64748b;
 
   /* Borders */
-  --border: #e5e7eb;
+  --border: #d9e2ec;
 
   /* Status */
   --success: #16a34a;
@@ -73,6 +76,6 @@
 
   ::selection {
     background: var(--primary);
-    color: #111827;
+    color: #ffffff;
   }
 }

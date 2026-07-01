@@ -20,11 +20,11 @@ export default function HeroStats() {
       {stats.map((item) => (
         <div key={item.label}>
 
-          <h2 className="text-3xl font-black text-zinc-900 sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-black text-slate-950 sm:text-4xl lg:text-5xl">
             {item.value}
           </h2>
 
-          <p className="mt-2 text-xs font-semibold uppercase text-zinc-500 sm:text-sm">
+          <p className="mt-2 text-xs font-semibold uppercase text-slate-500 sm:text-sm">
             {item.label}
           </p>
 

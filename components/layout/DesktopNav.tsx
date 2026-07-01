@@ -36,11 +36,11 @@ export default function DesktopNav() {
         <Link
           key={item.href}
           href={item.href}
-          className="group relative text-[15px] font-semibold text-zinc-700 transition-all duration-300 hover:text-yellow-600"
+          className="group relative text-[15px] font-semibold text-slate-700 transition-all duration-300 hover:text-red-700"
         >
           {item.title}
 
-          <span className="absolute -bottom-2 left-0 h-[2px] w-0 bg-yellow-500 transition-all duration-300 group-hover:w-full" />
+          <span className="absolute -bottom-2 left-0 h-[2px] w-0 bg-red-700 transition-all duration-300 group-hover:w-full" />
         </Link>
       ))}
     </nav>

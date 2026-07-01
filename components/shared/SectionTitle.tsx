@@ -12,7 +12,7 @@ export default function SectionTitle({
   return (
     <div className="mx-auto mb-14 max-w-3xl text-center">
       {eyebrow && (
-        <span className="mb-3 inline-block rounded-full bg-yellow-100 px-4 py-1 text-sm font-semibold text-yellow-700">
+        <span className="mb-3 inline-block rounded-full bg-red-50 px-4 py-1 text-sm font-semibold text-red-700 ring-1 ring-red-100">
           {eyebrow}
         </span>
       )}

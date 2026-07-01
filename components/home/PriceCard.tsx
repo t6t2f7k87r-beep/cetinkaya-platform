@@ -4,13 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function PriceCard() {
   return (
-    <Card className="overflow-hidden border-0 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500">
+    <Card className="overflow-hidden border-0 bg-gradient-to-r from-red-700 to-slate-950">
 
       <CardContent className="flex items-center justify-between p-8">
 
         <div>
 
-          <p className="text-sm font-semibold uppercase tracking-widest text-yellow-100">
+          <p className="text-sm font-semibold uppercase tracking-widest text-red-100">
             Güncel Demir Fiyatı
           </p>
 
@@ -18,7 +18,7 @@ export default function PriceCard() {
             ₺32.450
           </h2>
 
-          <p className="mt-4 text-yellow-100">
+          <p className="mt-4 text-red-100">
             Son Güncelleme • Bugün 09:30
           </p>
 

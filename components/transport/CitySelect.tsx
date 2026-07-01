@@ -14,7 +14,7 @@ export default function CitySelect({
         {label}
       </label>
 
-      <select className="w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-4 outline-none focus:border-yellow-500">
+      <select className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 outline-none focus:border-red-700">
 
         <option>{placeholder}</option>
 

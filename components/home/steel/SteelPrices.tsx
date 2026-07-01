@@ -8,15 +8,15 @@ export default function SteelPrices() {
 
         <div className="mb-16">
 
-          <span className="font-bold uppercase tracking-[0.3em] text-yellow-500">
+          <span className="font-bold uppercase tracking-[0.3em] text-red-700">
             CANLI PİYASA
           </span>
 
-          <h2 className="mt-4 text-5xl font-black text-zinc-900">
+          <h2 className="mt-4 text-5xl font-black text-slate-950">
             Güncel Demir Fiyatları
           </h2>
 
-          <p className="mt-4 max-w-2xl text-lg text-zinc-500">
+          <p className="mt-4 max-w-2xl text-lg text-slate-600">
             Fiyatlar ileride API ile otomatik güncellenecek.
           </p>
 

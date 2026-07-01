@@ -9,18 +9,18 @@ export default function ProductsPage() {
     <>
       <Navbar />
 
-      <main className="bg-zinc-50">
+      <main className="bg-slate-50">
         <section className="mx-auto max-w-7xl px-6 py-20">
           <div className="max-w-3xl">
-            <p className="font-bold uppercase tracking-[0.3em] text-yellow-500">
+            <p className="font-bold uppercase tracking-[0.3em] text-red-700">
               Ürünler
             </p>
 
-            <h1 className="mt-4 text-5xl font-black text-zinc-900">
+            <h1 className="mt-4 text-5xl font-black text-slate-950">
               Yapı Malzemeleri
             </h1>
 
-            <p className="mt-5 text-lg leading-8 text-zinc-500">
+            <p className="mt-5 text-lg leading-8 text-slate-600">
               Demir, çimento, gaz beton ve diğer yapı malzemelerini tek yerden inceleyin.
             </p>
           </div>

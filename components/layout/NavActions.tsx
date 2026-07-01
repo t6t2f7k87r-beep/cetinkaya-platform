@@ -5,14 +5,14 @@ export default function NavActions() {
     <div className="hidden lg:flex items-center gap-4">
       <Link
         href="/giris"
-        className="text-sm font-semibold text-zinc-700 transition hover:text-yellow-600"
+        className="text-sm font-semibold text-slate-700 transition hover:text-red-700"
       >
         Giriş Yap
       </Link>
 
       <Link
         href="/teklif"
-        className="rounded-xl bg-yellow-500 px-5 py-3 text-sm font-bold text-black shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl"
+        className="rounded-xl bg-red-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-red-900/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-800 hover:shadow-xl"
       >
         Teklif Al
       </Link>

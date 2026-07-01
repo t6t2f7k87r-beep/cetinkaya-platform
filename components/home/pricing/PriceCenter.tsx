@@ -8,7 +8,7 @@ import PriceItem from "./PriceItem";
 
 export default function PriceCenter() {
   return (
-    <Section>
+    <Section className="bg-white">
 
       <Container>
 

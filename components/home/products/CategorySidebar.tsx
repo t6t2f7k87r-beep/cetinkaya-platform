@@ -9,13 +9,13 @@ const categories = Array.from(
 
 export default function CategorySidebar() {
   return (
-    <aside className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-black text-zinc-900">
+    <aside className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-black text-slate-950">
         Kategoriler
       </h2>
 
       <div className="mt-5 space-y-2">
-        <button className="flex w-full items-center justify-between rounded-2xl bg-yellow-500 px-4 py-3 text-left font-bold text-white">
+        <button className="flex w-full items-center justify-between rounded-2xl bg-red-700 px-4 py-3 text-left font-bold text-white">
           <span>Tüm Ürünler</span>
           <span>{featuredProducts.length}</span>
         </button>
@@ -23,7 +23,7 @@ export default function CategorySidebar() {
         {categories.map(([category, count]) => (
           <button
             key={category}
-            className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 px-4 py-3 text-left font-semibold text-zinc-700 transition hover:border-yellow-300 hover:text-yellow-600"
+            className="flex w-full items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 text-left font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
           >
             <span>{category}</span>
             <span>{count}</span>

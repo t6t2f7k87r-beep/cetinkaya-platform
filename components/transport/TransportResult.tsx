@@ -1,6 +1,6 @@
  export default function TransportResult() {
   return (
-    <div className="rounded-[32px] bg-zinc-900 p-8 text-white shadow-2xl">
+    <div className="rounded-[32px] bg-slate-950 p-8 text-white shadow-2xl">
 
       <div className="flex items-center justify-between">
 
@@ -16,9 +16,9 @@
 
       <div className="mt-10 space-y-6">
 
-        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-700 pb-4">
 
-          <span className="text-zinc-400">
+          <span className="text-slate-400">
             Mesafe
           </span>
 
@@ -28,9 +28,9 @@
 
         </div>
 
-        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-700 pb-4">
 
-          <span className="text-zinc-400">
+          <span className="text-slate-400">
             Yaklaşık Süre
           </span>
 
@@ -40,9 +40,9 @@
 
         </div>
 
-        <div className="flex items-center justify-between border-b border-zinc-700 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-700 pb-4">
 
-          <span className="text-zinc-400">
+          <span className="text-slate-400">
             Araç
           </span>
 
@@ -54,11 +54,11 @@
 
         <div className="pt-6">
 
-          <p className="text-zinc-400">
+          <p className="text-slate-400">
             Tahmini Nakliye Bedeli
           </p>
 
-          <h2 className="mt-3 text-6xl font-black text-yellow-400">
+          <h2 className="mt-3 text-6xl font-black text-red-400">
             ₺18.750
           </h2>
 
