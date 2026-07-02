@@ -6,6 +6,7 @@ const ADMIN_CREDENTIAL_HASH =
 const SESSION_KEY = "cetinkaya-admin-session";
 const LEGACY_SESSION_KEY = "cetinkaya-session";
 const SESSION_VALUE = "active";
+export const AUTH_EVENT = "cetinkaya-auth-updated";
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -35,6 +36,7 @@ export function startAdminSession() {
 
   localStorage.setItem(SESSION_KEY, SESSION_VALUE);
   localStorage.removeItem(LEGACY_SESSION_KEY);
+  window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
 export function endAdminSession() {
@@ -44,6 +46,7 @@ export function endAdminSession() {
 
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(LEGACY_SESSION_KEY);
+  window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
 export async function verifyAdminCredentials(email: string, password: string) {

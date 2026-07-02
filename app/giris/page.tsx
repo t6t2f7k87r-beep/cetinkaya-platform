@@ -2,10 +2,15 @@
 
 import { LockKeyhole } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
-import { ADMIN_EMAIL, startAdminSession, verifyAdminCredentials } from "@/lib/auth";
+import {
+  ADMIN_EMAIL,
+  isAdminSessionActive,
+  startAdminSession,
+  verifyAdminCredentials,
+} from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,12 +19,18 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (isAdminSessionActive()) {
+      router.replace("/admin");
+    }
+  }, [router]);
+
   return (
     <>
       <Navbar />
       <main className="bg-slate-50">
-        <section className="mx-auto grid min-h-[calc(100vh-96px)] max-w-6xl items-center px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-950/5">
+        <section className="mx-auto grid min-h-[calc(100svh-96px)] max-w-6xl items-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+          <div className="reveal-scale mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 sm:p-8">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-700 text-white">
               <LockKeyhole size={28} />
             </div>

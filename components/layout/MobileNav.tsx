@@ -2,7 +2,9 @@
 
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { AUTH_EVENT, endAdminSession, isAdminSessionActive } from "@/lib/auth";
 
 const links = [
   { title: "Anasayfa", href: "/" },
@@ -17,7 +19,21 @@ const links = [
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const Icon = isOpen ? X : Menu;
+
+  useEffect(() => {
+    const syncSession = () => setIsLoggedIn(isAdminSessionActive());
+
+    syncSession();
+    window.addEventListener(AUTH_EVENT, syncSession);
+    window.addEventListener("storage", syncSession);
+
+    return () => {
+      window.removeEventListener(AUTH_EVENT, syncSession);
+      window.removeEventListener("storage", syncSession);
+    };
+  }, []);
 
   return (
     <div className="lg:hidden">
@@ -46,20 +62,34 @@ export default function MobileNav() {
           </nav>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <Link
-              href="/giris"
-              onClick={() => setIsOpen(false)}
-              className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-700"
-            >
-              Giriş
-            </Link>
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={() => {
+                  endAdminSession();
+                  setIsLoggedIn(false);
+                  setIsOpen(false);
+                }}
+                className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-700"
+              >
+                Çıkış
+              </button>
+            ) : (
+              <Link
+                href="/giris"
+                onClick={() => setIsOpen(false)}
+                className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-700"
+              >
+                Giriş
+              </Link>
+            )}
 
             <Link
-              href="/teklif"
+              href={isLoggedIn ? "/admin" : "/teklif"}
               onClick={() => setIsOpen(false)}
               className="rounded-xl bg-red-700 px-4 py-3 text-center text-sm font-bold text-white"
             >
-              Teklif Al
+              {isLoggedIn ? "Admin Paneli" : "Teklif Al"}
             </Link>
           </div>
         </div>
