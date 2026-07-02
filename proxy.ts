@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { ADMIN_AUTH_COOKIE, isValidAdminToken } from "@/lib/server-auth";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const token = request.cookies.get(ADMIN_AUTH_COOKIE)?.value;
 
   if (await isValidAdminToken(token)) {

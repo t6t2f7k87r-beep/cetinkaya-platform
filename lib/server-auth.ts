@@ -2,11 +2,8 @@ export const ADMIN_EMAIL = "ctk.burakberke@gmail.com";
 export const ADMIN_AUTH_COOKIE = "cetinkaya-admin-auth";
 
 const ADMIN_CREDENTIAL_HASH =
-  process.env.ADMIN_CREDENTIAL_HASH ??
-  "2af6f8c5c84bc3e8925d7f1984d7fc8b46e68c538dada69e58f714a8e4e6d6af";
-const ADMIN_SESSION_SECRET =
-  process.env.ADMIN_SESSION_SECRET ??
-  "cetinkayalar-admin-session-v1-rotate-in-vercel-env";
+  process.env.ADMIN_CREDENTIAL_HASH;
+const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET;
 
 async function sha256(value: string) {
   const bytes = new TextEncoder().encode(value);
@@ -18,6 +15,10 @@ async function sha256(value: string) {
 }
 
 export async function verifyAdminCredentials(email: string, password: string) {
+  if (!ADMIN_CREDENTIAL_HASH || !ADMIN_SESSION_SECRET) {
+    return false;
+  }
+
   const normalizedEmail = email.trim().toLowerCase();
 
   if (normalizedEmail !== ADMIN_EMAIL) {
@@ -28,6 +29,10 @@ export async function verifyAdminCredentials(email: string, password: string) {
 }
 
 export async function getAdminSessionToken() {
+  if (!ADMIN_CREDENTIAL_HASH || !ADMIN_SESSION_SECRET) {
+    return "";
+  }
+
   return sha256(`${ADMIN_CREDENTIAL_HASH}:${ADMIN_SESSION_SECRET}`);
 }
 
