@@ -64,12 +64,12 @@ export default function DesktopNav() {
   }, []);
 
   return (
-    <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+    <nav className="hidden max-w-[560px] flex-wrap items-center justify-center gap-x-5 gap-y-3 lg:flex xl:max-w-none xl:gap-x-7">
       {visibleLinks.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className="group relative text-[15px] font-semibold text-slate-700 transition-all duration-300 hover:text-red-700"
+          className="group relative rounded-full px-1 py-1 text-[14px] font-semibold text-slate-700 transition-all duration-300 hover:text-red-700 xl:text-[15px]"
         >
           {item.title}
 

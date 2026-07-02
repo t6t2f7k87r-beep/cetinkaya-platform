@@ -9,13 +9,13 @@ export default function ProductsPage() {
       <Navbar />
 
       <main className="bg-slate-50">
-        <section className="mx-auto max-w-7xl px-6 py-20">
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="max-w-3xl">
             <p className="font-bold uppercase tracking-[0.3em] text-red-700">
               Ürünler
             </p>
 
-            <h1 className="mt-4 text-5xl font-black text-slate-950">
+            <h1 className="mt-4 text-4xl font-black text-slate-950 sm:text-5xl">
               Yapı Malzemeleri
             </h1>
 

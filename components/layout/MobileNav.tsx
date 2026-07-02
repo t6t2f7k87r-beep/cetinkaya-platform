@@ -49,14 +49,14 @@ export default function MobileNav() {
       </button>
 
       {isOpen ? (
-        <div className="mobile-menu-panel absolute left-0 top-24 max-h-[calc(100svh-96px)] w-full overflow-y-auto border-b border-slate-200 bg-white px-4 py-5 shadow-xl shadow-slate-950/10 sm:px-6">
+        <div className="mobile-menu-panel absolute left-0 top-full max-h-[calc(100svh-96px)] w-full overflow-y-auto border-b border-slate-200 bg-white px-4 py-6 shadow-xl shadow-slate-950/10 sm:px-6">
           <nav className="grid gap-2">
             {links.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-xl px-4 py-3 font-bold text-slate-700 transition hover:bg-red-50 hover:text-red-700"
+                className="rounded-xl px-4 py-3.5 font-bold text-slate-700 transition hover:bg-red-50 hover:text-red-700"
               >
                 {item.title}
               </Link>
@@ -65,7 +65,7 @@ export default function MobileNav() {
               <Link
                 href="/admin"
                 onClick={() => setIsOpen(false)}
-                className="rounded-xl px-4 py-3 font-bold text-slate-700 transition hover:bg-red-50 hover:text-red-700"
+                className="rounded-xl px-4 py-3.5 font-bold text-slate-700 transition hover:bg-red-50 hover:text-red-700"
               >
                 Admin
               </Link>

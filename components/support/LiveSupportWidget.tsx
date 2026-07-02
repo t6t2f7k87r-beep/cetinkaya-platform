@@ -29,7 +29,7 @@ function buildSupportReply(message: string) {
     return "Demir ve diğer malzeme fiyatlarını Ürünler ve Canlı Piyasa bölümlerinden takip edebilirsiniz. Net teklif için miktar ve teslimat ilini yazmanız yeterli.";
   }
 
-  return "Talebinizi aldık. Satış ekibimiz 0533 736 67 52 üzerinden hızlıca destek verebilir; burada da ürün, nakliye ve fatura sorularınızı yanıtlayabilirim.";
+  return "Talebinizi aldık. Satış ekibimiz 0422 336 55 00 veya 0533 736 67 52 üzerinden hızlıca destek verebilir; burada da ürün, nakliye ve fatura sorularınızı yanıtlayabilirim.";
 }
 
 export default function LiveSupportWidget() {

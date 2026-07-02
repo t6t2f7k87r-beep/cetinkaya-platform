@@ -5,7 +5,7 @@ export default function NavLogo() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-3 transition-transform duration-300 hover:scale-105"
+      className="flex min-w-0 items-center gap-3 transition-transform duration-300 hover:scale-105"
     >
       <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-slate-200">
         <Image
@@ -18,8 +18,8 @@ export default function NavLogo() {
         />
       </div>
 
-      <div className="leading-tight">
-        <h2 className="text-2xl font-black tracking-tight text-slate-950">
+      <div className="min-w-0 leading-tight">
+        <h2 className="text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
           ÇETİNKAYALAR
         </h2>
 

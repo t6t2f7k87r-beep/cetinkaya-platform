@@ -2,10 +2,20 @@ import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 import Navbar from "@/components/layout/Navbar";
 
+const address = "Hoca Ahmet Yesevi Mah. Apak Sok. No:10/A, 44100 Yeşilyurt/Malatya";
+const mapsUrl =
+  "https://www.google.com/maps/search/?api=1&query=Hoca%20Ahmet%20Yesevi%20Mah.%20Apak%20Sok.%20No%3A10%2FA%2044100%20Ye%C5%9Filyurt%2FMalatya";
+
 const contactItems = [
   {
     icon: Phone,
-    title: "Telefon",
+    title: "Şirket Hattı",
+    value: "0422 336 55 00",
+    href: "tel:+904223365500",
+  },
+  {
+    icon: Phone,
+    title: "Mobil Hat",
     value: "0533 736 67 52",
     href: "tel:+905337366752",
   },
@@ -17,9 +27,9 @@ const contactItems = [
   },
   {
     icon: MapPin,
-    title: "Merkez",
-    value: "Malatya / Türkiye",
-    href: "https://maps.google.com/?q=Malatya",
+    title: "Konum",
+    value: address,
+    href: mapsUrl,
   },
 ];
 
@@ -46,10 +56,10 @@ export default function ContactPage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="tel:+905337366752"
+                href="tel:+904223365500"
                 className="rounded-2xl bg-red-700 px-5 py-3 font-bold text-white shadow-lg shadow-red-900/15 transition hover:bg-red-800"
               >
-                Hemen Ara
+                Şirket Hattını Ara
               </a>
 
               <a
@@ -59,10 +69,20 @@ export default function ContactPage() {
                 <MessageCircle size={18} />
                 WhatsApp
               </a>
+
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 font-bold text-slate-700 transition hover:border-red-200 hover:text-red-700"
+              >
+                <MapPin size={18} />
+                Yol Tarifi Al
+              </a>
             </div>
           </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {contactItems.map((item) => {
               const Icon = item.icon;
 
@@ -70,7 +90,9 @@ export default function ContactPage() {
                 <a
                   key={item.title}
                   href={item.href}
-                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+                  target={item.title === "Konum" ? "_blank" : undefined}
+                  rel={item.title === "Konum" ? "noreferrer" : undefined}
+                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-red-100 hover:shadow-xl hover:shadow-slate-950/10"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-700">
                     <Icon size={24} />

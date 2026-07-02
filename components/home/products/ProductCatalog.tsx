@@ -52,7 +52,7 @@ export default function ProductCatalog() {
   }, [category, products, query]);
 
   return (
-    <div className="mt-12 grid gap-8 lg:grid-cols-[280px_1fr]">
+    <div className="mt-14 grid gap-10 lg:grid-cols-[300px_1fr] xl:gap-12">
       <CategorySidebar
         activeCategory={category}
         categories={categories}
@@ -70,7 +70,7 @@ export default function ProductCatalog() {
           onQueryChange={setQuery}
         />
 
-        <div className="mt-8">
+        <div className="mt-10">
           <ProductGrid products={filteredProducts} />
         </div>
 
