@@ -6,18 +6,22 @@ import { ArrowRight, MapPin, Truck } from "lucide-react";
 
 type Props = {
   product: Product;
+  index?: number;
 };
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product, index = 0 }: Props) {
   return (
-    <article className="group overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-950/10">
+    <article
+      className="group reveal-scale interactive-lift overflow-hidden rounded-3xl border border-slate-200 bg-white hover:border-red-100 hover:shadow-2xl hover:shadow-slate-950/10"
+      style={{ animationDelay: `${Math.min(index, 8) * 70}ms` }}
+    >
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
         <Image
           src={product.image}
           alt={product.name}
           fill
           sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
-          className="object-cover transition duration-500 group-hover:scale-105"
+          className="object-cover transition duration-700 ease-out group-hover:scale-105"
         />
 
         <div className="absolute left-4 top-4 flex flex-wrap gap-2">
@@ -57,7 +61,7 @@ export default function ProductCard({ product }: Props) {
           </div>
         </div>
 
-        <div className="mt-8 flex items-end justify-between">
+        <div className="mt-8 flex items-end justify-between gap-4">
           <div>
             <p className="text-sm text-slate-500">
               Başlangıç
@@ -74,7 +78,7 @@ export default function ProductCard({ product }: Props) {
 
           <Link
             href={`/urunler?kategori=${encodeURIComponent(product.category)}`}
-            className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-110 group-hover:bg-red-700"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-white transition duration-300 group-hover:scale-110 group-hover:bg-red-700"
             aria-label={`${product.name} detayına git`}
           >
             <ArrowRight size={20} />

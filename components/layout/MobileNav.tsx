@@ -24,14 +24,14 @@ export default function MobileNav() {
       <button
         type="button"
         onClick={() => setIsOpen((value) => !value)}
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-800"
+        className="interactive-lift flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-800"
         aria-label={isOpen ? "Menüyü kapat" : "Menüyü aç"}
       >
         <Icon size={22} />
       </button>
 
       {isOpen ? (
-        <div className="absolute left-0 top-24 w-full border-b border-slate-200 bg-white px-4 py-5 shadow-xl shadow-slate-950/10 sm:px-6">
+        <div className="mobile-menu-panel absolute left-0 top-24 w-full border-b border-slate-200 bg-white px-4 py-5 shadow-xl shadow-slate-950/10 sm:px-6">
           <nav className="grid gap-2">
             {links.map((item) => (
               <Link

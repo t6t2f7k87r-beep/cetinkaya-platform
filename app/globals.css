@@ -79,3 +79,101 @@
     color: #ffffff;
   }
 }
+
+@layer utilities {
+  .reveal-up {
+    animation: reveal-up 680ms cubic-bezier(.2, .8, .2, 1) both;
+  }
+
+  .reveal-scale {
+    animation: reveal-scale 720ms cubic-bezier(.2, .8, .2, 1) both;
+  }
+
+  .soft-float {
+    animation: soft-float 7s ease-in-out infinite;
+  }
+
+  .interactive-lift {
+    transition:
+      transform 260ms ease,
+      box-shadow 260ms ease,
+      border-color 260ms ease,
+      background-color 260ms ease,
+      color 260ms ease;
+  }
+
+  .interactive-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .mobile-menu-panel {
+    animation: menu-drop 220ms ease both;
+    transform-origin: top;
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes reveal-scale {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes soft-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes menu-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scaleY(.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-up,
+    .reveal-scale,
+    .soft-float,
+    .mobile-menu-panel {
+      animation: none;
+    }
+
+    .interactive-lift,
+    .interactive-lift:hover {
+      transform: none;
+      transition: none;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

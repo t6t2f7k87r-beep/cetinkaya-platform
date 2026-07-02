@@ -18,14 +18,14 @@ export default function FeaturedProducts() {
   }, []);
 
   return (
-    <section className="bg-slate-50 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-14">
+    <section className="bg-slate-50 py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mb-10 reveal-up sm:mb-14">
           <span className="font-bold uppercase tracking-[0.3em] text-red-700">
             POPÜLER ÜRÜNLER
           </span>
 
-          <h2 className="mt-4 text-5xl font-black text-slate-950">
+          <h2 className="mt-4 text-3xl font-black text-slate-950 sm:text-5xl">
             En Çok Tercih Edilenler
           </h2>
 
@@ -34,11 +34,12 @@ export default function FeaturedProducts() {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {featuredProducts.map((product) => (
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {featuredProducts.map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}
+              index={index}
             />
           ))}
         </div>
