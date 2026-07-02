@@ -3,6 +3,10 @@
 import {
   Archive,
   BarChart3,
+  Copy,
+  ExternalLink,
+  Eye,
+  EyeOff,
   FileText,
   KeyRound,
   PackageCheck,
@@ -37,6 +41,16 @@ import {
   simulateIdisSync,
 } from "@/lib/commerce-store";
 
+type SecureIntegrationAccess = {
+  provider: string;
+  version: string;
+  portalUrl: string;
+  username: string;
+  password: string;
+  configured: boolean;
+  missingKeys: string[];
+};
+
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => isAdminSessionActive());
   const [products, setProducts] = useState(() => getManagedProducts());
@@ -49,6 +63,9 @@ export default function AdminPage() {
     getIntegrationSettings(),
   );
   const [registrations, setRegistrations] = useState(() => getCustomerRegistrations());
+  const [secureAccess, setSecureAccess] = useState<SecureIntegrationAccess | null>(null);
+  const [secureAccessLoading, setSecureAccessLoading] = useState(false);
+  const [showEinvoicePassword, setShowEinvoicePassword] = useState(false);
   const [bundleId, setBundleId] = useState("");
   const [bundleWeight, setBundleWeight] = useState(5);
   const [bundleProductId, setBundleProductId] = useState(
@@ -59,6 +76,19 @@ export default function AdminPage() {
   useEffect(() => {
     void syncAdminSession().then(setIsLoggedIn);
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setSecureAccess(null);
+      return;
+    }
+
+    setSecureAccessLoading(true);
+    fetch("/api/admin/secure-integrations", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: SecureIntegrationAccess | null) => setSecureAccess(data))
+      .finally(() => setSecureAccessLoading(false));
+  }, [isLoggedIn]);
 
   const cards = useMemo(
     () => [
@@ -115,6 +145,16 @@ export default function AdminPage() {
     if (message) {
       setStatus(message);
     }
+  }
+
+  async function copySecureValue(label: string, value?: string) {
+    if (!value) {
+      setStatus(`${label} henüz Vercel gizli ayarlarında tanımlı değil.`);
+      return;
+    }
+
+    await navigator.clipboard.writeText(value);
+    setStatus(`${label} kopyalandı.`);
   }
 
   if (!isLoggedIn) {
@@ -376,6 +416,109 @@ export default function AdminPage() {
                   bilgileri geldiğinde fatura gönderimi ve senkronizasyon aynı
                   panelden aktif edilir.
                 </p>
+
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-sm font-bold uppercase text-slate-500">
+                        Gizli erişim kasası
+                      </p>
+                      <h3 className="mt-1 text-xl font-black text-slate-950">
+                        {secureAccess?.provider ?? "E-Fatura / E-Arşiv"} portal bilgileri
+                      </h3>
+                      <p className="mt-1 text-sm font-semibold text-slate-500">
+                        {secureAccessLoading
+                          ? "Bilgiler kontrol ediliyor."
+                          : secureAccess?.configured
+                            ? `${secureAccess.version} hazır`
+                            : "Vercel gizli ayarları bekleniyor"}
+                      </p>
+                    </div>
+
+                    {secureAccess?.portalUrl ? (
+                      <a
+                        href={secureAccess.portalUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-red-700"
+                      >
+                        <ExternalLink size={16} />
+                        Portalı Aç
+                      </a>
+                    ) : null}
+                  </div>
+
+                  {secureAccess?.missingKeys.length ? (
+                    <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
+                      Eksik gizli ayarlar: {secureAccess.missingKeys.join(", ")}
+                    </p>
+                  ) : null}
+
+                  <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <p className="text-xs font-bold uppercase text-slate-500">
+                        Portal
+                      </p>
+                      <p className="mt-2 truncate font-bold text-slate-950">
+                        {secureAccess?.portalUrl || "Tanımlanmadı"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <p className="text-xs font-bold uppercase text-slate-500">
+                        Kullanıcı adı
+                      </p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <p className="min-w-0 flex-1 truncate font-bold text-slate-950">
+                          {secureAccess?.username || "Tanımlanmadı"}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            copySecureValue("E-fatura kullanıcı adı", secureAccess?.username)
+                          }
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-700"
+                          aria-label="Kullanıcı adını kopyala"
+                        >
+                          <Copy size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                      <p className="text-xs font-bold uppercase text-slate-500">
+                        Şifre
+                      </p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <p className="min-w-0 flex-1 truncate font-bold text-slate-950">
+                          {secureAccess?.password
+                            ? showEinvoicePassword
+                              ? secureAccess.password
+                              : "••••••••••"
+                            : "Tanımlanmadı"}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowEinvoicePassword((current) => !current)}
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-700"
+                          aria-label={showEinvoicePassword ? "Şifreyi gizle" : "Şifreyi göster"}
+                        >
+                          {showEinvoicePassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            copySecureValue("E-fatura şifresi", secureAccess?.password)
+                          }
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-700"
+                          aria-label="Şifreyi kopyala"
+                        >
+                          <Copy size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <button
