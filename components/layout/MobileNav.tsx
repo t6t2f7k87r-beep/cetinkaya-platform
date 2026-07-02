@@ -10,6 +10,8 @@ const links = [
   { title: "Anasayfa", href: "/" },
   { title: "Ürünler", href: "/urunler" },
   { title: "Kategoriler", href: "/kategoriler" },
+  { title: "İnşaat", href: "/insaat" },
+  { title: "Projelerimiz", href: "/projelerimiz" },
   { title: "Nakliye", href: "/nakliye" },
   { title: "AI Asistan", href: "/ai" },
   { title: "E-Fatura", href: "/efatura" },

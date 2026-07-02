@@ -36,12 +36,13 @@ export default function LoginPage() {
             </div>
 
             <h1 className="mt-6 text-3xl font-black text-slate-950">
-              Satış Programı Girişi
+              Hoş geldiniz
             </h1>
 
             <p className="mt-3 leading-7 text-slate-600">
-              Teklifleri, ürünleri ve müşteri taleplerini yönetmek için
-              personel veya bayi hesabınızla giriş yapın.
+              Burası bölgenin en gelişmiş yapı platformu. Teklifleri,
+              ürünleri ve müşteri taleplerini yönetmek için yetkili admin
+              hesabınızla giriş yapın.
             </p>
 
             <form

@@ -16,6 +16,14 @@ const links = [
     href: "/kategoriler",
   },
   {
+    title: "İnşaat",
+    href: "/insaat",
+  },
+  {
+    title: "Projelerimiz",
+    href: "/projelerimiz",
+  },
+  {
     title: "Nakliye",
     href: "/nakliye",
   },
@@ -39,7 +47,7 @@ const links = [
 
 export default function DesktopNav() {
   return (
-    <nav className="hidden lg:flex items-center gap-7">
+    <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
       {links.map((item) => (
         <Link
           key={item.href}
