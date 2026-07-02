@@ -175,11 +175,27 @@ function syncSteelProduct(products: Product[], bundles: SteelBundle[]) {
 }
 
 function mergeSeedProducts(storedProducts: Product[]) {
-  const storedById = new Map(storedProducts.map((product) => [product.id, product]));
+  const seedSlugs = new Set(seedProducts.map((product) => product.slug));
+  const storedSlugs = new Set(storedProducts.map((product) => product.slug));
+  const sameCatalog =
+    seedSlugs.size === storedSlugs.size &&
+    [...seedSlugs].every((slug) => storedSlugs.has(slug));
+
+  if (!sameCatalog) {
+    writeJson(PRODUCTS_KEY, seedProducts);
+    writeJson(BUNDLES_KEY, defaultBundles());
+    return seedProducts;
+  }
+
+  const storedBySlug = new Map(storedProducts.map((product) => [product.slug, product]));
 
   return seedProducts.map((seedProduct) => ({
     ...seedProduct,
-    ...storedById.get(seedProduct.id),
+    ...storedBySlug.get(seedProduct.slug),
+    id: seedProduct.id,
+    slug: seedProduct.slug,
+    name: seedProduct.name,
+    category: seedProduct.category,
   }));
 }
 

@@ -19,8 +19,11 @@ export default function TransportCalculator() {
     cities.find(
       (city) =>
         city.name.toLocaleLowerCase("tr-TR") ===
-        (searchParams.get("nereden") ?? "").toLocaleLowerCase("tr-TR"),
-    )?.id ?? 44;
+          (searchParams.get("nereden") ?? "").toLocaleLowerCase("tr-TR") ||
+        ((searchParams.get("nereden") ?? "").toLocaleLowerCase("tr-TR") ===
+          "malatya" &&
+          city.name === "Malatya Merkez"),
+    )?.id ?? 4400;
   const initialToCity =
     cities.find(
       (city) =>
