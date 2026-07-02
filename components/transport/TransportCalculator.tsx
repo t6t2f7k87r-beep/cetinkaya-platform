@@ -79,7 +79,7 @@ export default function TransportCalculator() {
   return (
     <section className="bg-slate-50 py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-14">
+        <div className="mb-14" data-reveal="up">
           <span className="font-bold uppercase tracking-[0.3em] text-red-700">
             NAKLİYE
           </span>
@@ -93,7 +93,7 @@ export default function TransportCalculator() {
           </p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2" data-reveal="scale">
           <TransportForm
             cities={cities}
             vehicles={vehicles}

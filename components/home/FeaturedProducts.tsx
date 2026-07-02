@@ -20,7 +20,7 @@ export default function FeaturedProducts() {
   return (
     <section className="bg-slate-50 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-10 reveal-up sm:mb-14">
+        <div className="mb-10 sm:mb-14" data-reveal="up">
           <span className="font-bold uppercase tracking-[0.3em] text-red-700">
             POPÜLER ÜRÜNLER
           </span>

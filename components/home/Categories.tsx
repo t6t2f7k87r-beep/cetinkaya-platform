@@ -57,7 +57,7 @@ export default function Categories() {
 
       <div className="mx-auto max-w-7xl px-6">
 
-        <div className="mb-14">
+        <div className="mb-14" data-reveal="up">
 
           <p className="font-bold uppercase tracking-[0.3em] text-red-700">
             KATEGORİLER
@@ -78,7 +78,8 @@ export default function Categories() {
           {categories.map((item) => (
             <div
               key={item.title}
-              className="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-2xl hover:shadow-slate-950/10"
+              data-reveal="scale"
+              className="group premium-card premium-surface rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-2xl hover:shadow-slate-950/10"
             >
               <div className="text-5xl">
                 {item.icon}

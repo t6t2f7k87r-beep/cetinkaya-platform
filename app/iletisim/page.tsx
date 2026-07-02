@@ -39,7 +39,7 @@ export default function ContactPage() {
       <Navbar />
       <main className="bg-slate-50">
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl" data-reveal="up">
             <p className="font-bold uppercase tracking-[0.3em] text-red-700">
               İletişim
             </p>
@@ -92,7 +92,8 @@ export default function ContactPage() {
                   href={item.href}
                   target={item.title === "Konum" ? "_blank" : undefined}
                   rel={item.title === "Konum" ? "noreferrer" : undefined}
-                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-red-100 hover:shadow-xl hover:shadow-slate-950/10"
+                  data-reveal="scale"
+                  className="premium-card premium-surface rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-red-100 hover:shadow-xl hover:shadow-slate-950/10"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-700">
                     <Icon size={24} />
@@ -114,7 +115,8 @@ export default function ContactPage() {
             action="mailto:cetinkaya.n@outlook.com"
             method="post"
             encType="text/plain"
-            className="mt-10 grid gap-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2 lg:p-8"
+            data-reveal="up"
+            className="premium-surface mt-10 grid gap-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2 lg:p-8"
           >
             <label className="block">
               <span className="text-sm font-bold text-slate-600">Ad Soyad</span>

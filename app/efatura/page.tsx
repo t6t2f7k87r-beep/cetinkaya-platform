@@ -53,7 +53,7 @@ export default function EInvoicePage() {
 
       <main className="bg-slate-50">
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <div className="mb-10 max-w-3xl">
+          <div className="mb-10 max-w-3xl" data-reveal="up">
             <p className="font-bold uppercase tracking-[0.3em] text-red-700">
               E-Fatura / E-Arşiv
             </p>
@@ -90,7 +90,7 @@ export default function EInvoicePage() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[1fr_420px]">
-            <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+            <section data-reveal="left" className="premium-surface rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-700 text-white">
                 <FileText size={28} />
               </div>
@@ -193,7 +193,7 @@ export default function EInvoicePage() {
               </button>
             </section>
 
-            <aside className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 lg:p-8">
+            <aside data-reveal="right" className="premium-card premium-surface rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 lg:p-8">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-700">
                 <ReceiptText size={28} />
               </div>

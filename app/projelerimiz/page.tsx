@@ -35,7 +35,8 @@ export default function ProjectsPage() {
                   return (
                     <div
                       key={item.label}
-                      className="rounded-3xl border border-white/10 bg-white/[0.04] p-5"
+                      data-reveal="scale"
+                      className="premium-card rounded-3xl border border-white/10 bg-white/[0.04] p-5"
                     >
                       <Icon className="text-red-300" size={26} />
                       <p className="mt-4 font-bold text-white">{item.label}</p>

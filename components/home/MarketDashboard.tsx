@@ -98,7 +98,7 @@ export default function MarketDashboard() {
   return (
     <section id="canli-piyasa" className="bg-white py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal="up">
           <div>
             <p className="font-bold uppercase tracking-[0.25em] text-red-700">
               Canlı Piyasa
@@ -123,7 +123,7 @@ export default function MarketDashboard() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
+          <div data-reveal="left" className="premium-surface rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-6">
             <div className="mb-6 flex flex-wrap gap-2">
               {liveProducts.map((product) => (
                 <button
@@ -203,7 +203,8 @@ export default function MarketDashboard() {
             ].map((item) => (
               <article
                 key={item.label}
-                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+                data-reveal="right"
+                className="premium-card premium-surface rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
               >
                 <div className="flex items-center justify-between">
                   <div>

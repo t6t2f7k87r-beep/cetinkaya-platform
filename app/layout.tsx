@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LiveSupportWidget from "@/components/support/LiveSupportWidget";
+import ScrollReveal from "@/components/shared/ScrollReveal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -73,6 +74,7 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning>
       <body>
+        <ScrollReveal />
         {children}
         <LiveSupportWidget />
       </body>

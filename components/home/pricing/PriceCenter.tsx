@@ -21,10 +21,9 @@ export default function PriceCenter() {
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
 
           {prices.map((item) => (
-            <PriceItem
-              key={item.id}
-              item={item}
-            />
+            <div key={item.id} data-reveal="scale">
+              <PriceItem item={item} />
+            </div>
           ))}
 
         </div>

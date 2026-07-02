@@ -69,7 +69,8 @@ export default function ConstructionPage() {
               return (
                 <article
                   key={service.title}
-                  className="reveal-scale rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+                  data-reveal="scale"
+                  className="premium-card premium-surface rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
                   style={{ animationDelay: `${index * 90}ms` }}
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-700">
@@ -91,7 +92,7 @@ export default function ConstructionPage() {
 
         <section className="bg-white py-14">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/10 lg:p-8">
+            <div data-reveal="up" className="premium-card rounded-3xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/10 lg:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <p className="font-bold uppercase tracking-[0.25em] text-red-300">

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { Product } from "@/types/product";
 import { ArrowRight, MapPin, Truck } from "lucide-react";
@@ -12,8 +13,9 @@ type Props = {
 export default function ProductCard({ product, index = 0 }: Props) {
   return (
     <article
-      className="group reveal-scale interactive-lift overflow-hidden rounded-3xl border border-slate-200 bg-white hover:border-red-100 hover:shadow-2xl hover:shadow-slate-950/10"
-      style={{ animationDelay: `${Math.min(index, 8) * 70}ms` }}
+      data-reveal="scale"
+      className="group premium-card premium-surface interactive-lift overflow-hidden rounded-3xl border border-slate-200 bg-white hover:border-red-100 hover:shadow-2xl hover:shadow-slate-950/10"
+      style={{ "--reveal-delay": `${Math.min(index, 8) * 70}ms` } as CSSProperties}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
         <Image
