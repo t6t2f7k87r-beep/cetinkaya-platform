@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { AUTH_EVENT, endAdminSession, isAdminSessionActive } from "@/lib/auth";
+import { AUTH_EVENT, endAdminSession, isAdminSessionActive, syncAdminSession } from "@/lib/auth";
 
 const links = [
   { title: "Anasayfa", href: "/" },
@@ -28,6 +28,7 @@ export default function MobileNav() {
     const syncSession = () => setIsLoggedIn(isAdminSessionActive());
 
     syncSession();
+    void syncAdminSession().then(setIsLoggedIn);
     window.addEventListener(AUTH_EVENT, syncSession);
     window.addEventListener("storage", syncSession);
 

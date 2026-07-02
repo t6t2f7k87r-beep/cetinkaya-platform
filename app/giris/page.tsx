@@ -8,8 +8,8 @@ import Navbar from "@/components/layout/Navbar";
 import {
   ADMIN_EMAIL,
   isAdminSessionActive,
-  startAdminSession,
-  verifyAdminCredentials,
+  loginAdmin,
+  syncAdminSession,
 } from "@/lib/auth";
 
 export default function LoginPage() {
@@ -20,9 +20,11 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (isAdminSessionActive()) {
-      router.replace("/admin");
-    }
+    void syncAdminSession().then((active) => {
+      if (active || isAdminSessionActive()) {
+        router.replace("/admin");
+      }
+    });
   }, [router]);
 
   return (
@@ -52,10 +54,9 @@ export default function LoginPage() {
                 setIsSubmitting(true);
                 setMessage("");
 
-                const isValid = await verifyAdminCredentials(email, password);
+                const isValid = await loginAdmin(email, password);
 
                 if (isValid) {
-                  startAdminSession();
                   setMessage("Giriş başarılı. Admin paneline yönlendiriliyorsunuz.");
                   router.push("/admin");
                   setIsSubmitting(false);

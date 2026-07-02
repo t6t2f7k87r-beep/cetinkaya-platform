@@ -14,10 +14,10 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
-import { endAdminSession, isAdminSessionActive } from "@/lib/auth";
+import { endAdminSession, isAdminSessionActive, syncAdminSession } from "@/lib/auth";
 import {
   addSteelBundle,
   getCustomerRegistrations,
@@ -55,6 +55,10 @@ export default function AdminPage() {
     () => getManagedProducts().find((product) => product.category === "Demir")?.id ?? 1,
   );
   const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    void syncAdminSession().then(setIsLoggedIn);
+  }, []);
 
   const cards = useMemo(
     () => [

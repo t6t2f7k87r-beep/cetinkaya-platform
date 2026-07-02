@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { AUTH_EVENT, endAdminSession, isAdminSessionActive } from "@/lib/auth";
+import { AUTH_EVENT, endAdminSession, isAdminSessionActive, syncAdminSession } from "@/lib/auth";
 
 export default function NavActions() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,6 +12,7 @@ export default function NavActions() {
     const syncSession = () => setIsLoggedIn(isAdminSessionActive());
 
     syncSession();
+    void syncAdminSession().then(setIsLoggedIn);
     window.addEventListener(AUTH_EVENT, syncSession);
     window.addEventListener("storage", syncSession);
 

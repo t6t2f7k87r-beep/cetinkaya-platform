@@ -1,8 +1,6 @@
 "use client";
 
 const ADMIN_EMAIL = "ctk.burakberke@gmail.com";
-const ADMIN_CREDENTIAL_HASH =
-  "2af6f8c5c84bc3e8925d7f1984d7fc8b46e68c538dada69e58f714a8e4e6d6af";
 const SESSION_KEY = "cetinkaya-admin-session";
 const LEGACY_SESSION_KEY = "cetinkaya-session";
 const SESSION_VALUE = "active";
@@ -10,15 +8,6 @@ export const AUTH_EVENT = "cetinkaya-auth-updated";
 
 function isBrowser() {
   return typeof window !== "undefined";
-}
-
-async function sha256(value: string) {
-  const bytes = new TextEncoder().encode(value);
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
-
-  return Array.from(new Uint8Array(digest))
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
 }
 
 export function isAdminSessionActive() {
@@ -46,18 +35,50 @@ export function endAdminSession() {
 
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(LEGACY_SESSION_KEY);
+  void fetch("/api/auth/logout", {
+    method: "POST",
+    keepalive: true,
+  }).catch(() => undefined);
   window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
-export async function verifyAdminCredentials(email: string, password: string) {
-  const normalizedEmail = email.trim().toLowerCase();
+export async function loginAdmin(email: string, password: string) {
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-  if (normalizedEmail !== ADMIN_EMAIL) {
+  if (!response.ok) {
     return false;
   }
 
-  const hash = await sha256(`${normalizedEmail}:${password}`);
-  return hash === ADMIN_CREDENTIAL_HASH;
+  startAdminSession();
+  return true;
+}
+
+export async function syncAdminSession() {
+  if (!isBrowser()) {
+    return false;
+  }
+
+  const response = await fetch("/api/auth/session", {
+    cache: "no-store",
+  }).catch(() => null);
+  const data = response?.ok ? ((await response.json()) as { active?: boolean }) : null;
+  const active = Boolean(data?.active);
+
+  if (active) {
+    localStorage.setItem(SESSION_KEY, SESSION_VALUE);
+  } else {
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+  }
+
+  window.dispatchEvent(new Event(AUTH_EVENT));
+  return active;
 }
 
 export { ADMIN_EMAIL };
