@@ -44,12 +44,21 @@ export default function NavActions() {
           </button>
         </>
       ) : (
-        <Link
-          href="/giris"
-          className="text-sm font-semibold text-slate-700 transition hover:text-red-700"
-        >
-          Giriş Yap
-        </Link>
+        <>
+          <Link
+            href="/kayit-ol"
+            className="text-sm font-semibold text-slate-700 transition hover:text-red-700"
+          >
+            Kayıt Ol
+          </Link>
+
+          <Link
+            href="/giris"
+            className="text-sm font-semibold text-slate-700 transition hover:text-red-700"
+          >
+            Giriş Yap
+          </Link>
+        </>
       )}
 
       <Link

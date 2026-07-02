@@ -4,7 +4,7 @@ import { FileText, Plus, ReceiptText } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import Navbar from "@/components/layout/Navbar";
-import { products } from "@/data/products";
+import { getIntegrationSettings, getManagedProducts } from "@/lib/commerce-store";
 
 type InvoiceLine = {
   productId: number;
@@ -20,6 +20,9 @@ function invoiceNumber() {
 }
 
 export default function EInvoicePage() {
+  const [products] = useState(() => getManagedProducts());
+  const [integrationSettings] = useState(() => getIntegrationSettings());
+  const [documentType, setDocumentType] = useState<"efatura" | "earsiv">("efatura");
   const [companyName, setCompanyName] = useState("");
   const [taxNumber, setTaxNumber] = useState("");
   const [taxOffice, setTaxOffice] = useState("");
@@ -52,18 +55,38 @@ export default function EInvoicePage() {
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="mb-10 max-w-3xl">
             <p className="font-bold uppercase tracking-[0.3em] text-red-700">
-              E-Fatura
+              E-Fatura / E-Arşiv
             </p>
 
             <h1 className="mt-4 text-5xl font-black text-slate-950">
-              E-fatura taslağı oluştur
+              E-fatura ve e-arşiv taslağı oluştur
             </h1>
 
             <p className="mt-5 text-lg leading-8 text-slate-600">
               Satış kalemlerini, müşteri vergi bilgisini ve KDV toplamını tek
-              ekranda hazırlayın. Canlı entegrasyon için özel entegratör API
-              bilgileri eklendiğinde aynı akış gönderime hazır olur.
+              ekranda hazırlayın. Admin panelindeki özel entegratör bilgileri
+              tamamlandığında aynı akış canlı gönderime hazır olur.
             </p>
+
+            <div className="mt-5 inline-flex rounded-2xl border border-slate-200 bg-white p-1 shadow-sm">
+              {[
+                { value: "efatura", label: "E-Fatura" },
+                { value: "earsiv", label: "E-Arşiv" },
+              ].map((item) => (
+                <button
+                  key={item.value}
+                  type="button"
+                  onClick={() => setDocumentType(item.value as "efatura" | "earsiv")}
+                  className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
+                    documentType === item.value
+                      ? "bg-red-700 text-white"
+                      : "text-slate-600 hover:text-red-700"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[1fr_420px]">
@@ -186,6 +209,13 @@ export default function EInvoicePage() {
                 </div>
 
                 <div className="flex justify-between">
+                  <span>Belge Tipi</span>
+                  <strong className="text-slate-950">
+                    {documentType === "efatura" ? "E-Fatura" : "E-Arşiv"}
+                  </strong>
+                </div>
+
+                <div className="flex justify-between">
                   <span>Ara Toplam</span>
                   <strong className="text-slate-950">
                     ₺{totals.subtotal.toLocaleString("tr-TR")}
@@ -214,13 +244,17 @@ export default function EInvoicePage() {
                 onClick={() => {
                   setStatus(
                     companyName && taxNumber
-                      ? "E-fatura taslağı oluşturuldu. Entegratör API bilgileri bağlandığında gönderim yapılabilir."
+                      ? `${documentType === "efatura" ? "E-fatura" : "E-arşiv"} taslağı oluşturuldu. ${
+                          integrationSettings.status === "hazir"
+                            ? "Entegrasyon hazır; canlı gönderim için özel entegratör onayı beklenir."
+                            : "Admin panelinden entegratör API bilgileri tamamlanınca gönderim yapılabilir."
+                        }`
                       : "Fatura taslağı hazır; gönderim için firma ünvanı ve vergi no ekleyin.",
                   );
                 }}
                 className="mt-8 h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white shadow-xl shadow-red-900/20"
               >
-                E-Fatura Taslağı Oluştur
+                {documentType === "efatura" ? "E-Fatura" : "E-Arşiv"} Taslağı Oluştur
               </button>
 
               {status ? (

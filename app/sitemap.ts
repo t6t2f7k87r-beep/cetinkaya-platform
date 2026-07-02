@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/nakliye",
     "/ai",
     "/teklif",
+    "/kayit-ol",
     "/iletisim",
   ];
 

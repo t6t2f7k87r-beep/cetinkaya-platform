@@ -46,12 +46,40 @@ export type IdisSettings = {
   status: "beklemede" | "bagli" | "eksik-bilgi";
 };
 
+export type IntegrationSettings = {
+  einvoiceProvider: string;
+  einvoiceEndpoint: string;
+  einvoiceUsername: string;
+  einvoiceTokenPreview: string;
+  einvoiceEnabled: boolean;
+  archiveEnabled: boolean;
+  idisWebhookUrl: string;
+  transportApiEndpoint: string;
+  lastHealthCheckAt?: string;
+  status: "hazir" | "eksik-bilgi" | "beklemede";
+};
+
+export type CustomerRegistration = {
+  id: string;
+  companyName: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  city: string;
+  taxNumber: string;
+  need: string;
+  createdAt: string;
+  status: "yeni" | "incelendi";
+};
+
 const PRODUCTS_KEY = "cetinkaya-products";
 const VEHICLES_KEY = "cetinkaya-vehicles";
 const SALES_KEY = "cetinkaya-sales";
 const TRANSPORT_ORDERS_KEY = "cetinkaya-transport-orders";
 const BUNDLES_KEY = "cetinkaya-steel-bundles";
 const IDIS_SETTINGS_KEY = "cetinkaya-idis-settings";
+const INTEGRATION_SETTINGS_KEY = "cetinkaya-integration-settings";
+const CUSTOMER_REGISTRATIONS_KEY = "cetinkaya-customer-registrations";
 export const STORE_EVENT = "cetinkaya-store-updated";
 
 function isBrowser() {
@@ -109,6 +137,20 @@ function defaultIdisSettings(): IdisSettings {
     endpoint: "",
     username: "",
     tokenPreview: "",
+    status: "beklemede",
+  };
+}
+
+function defaultIntegrationSettings(): IntegrationSettings {
+  return {
+    einvoiceProvider: "Özel entegratör seçilecek",
+    einvoiceEndpoint: "",
+    einvoiceUsername: "",
+    einvoiceTokenPreview: "",
+    einvoiceEnabled: false,
+    archiveEnabled: false,
+    idisWebhookUrl: "",
+    transportApiEndpoint: "",
     status: "beklemede",
   };
 }
@@ -231,6 +273,73 @@ export function saveIdisSettings(settings: IdisSettings) {
     status: hasConnectionInfo && settings.enabled ? "bagli" : "eksik-bilgi",
     lastSyncAt: hasConnectionInfo && settings.enabled ? new Date().toISOString() : settings.lastSyncAt,
   });
+}
+
+export function getIntegrationSettings() {
+  return readJson<IntegrationSettings>(
+    INTEGRATION_SETTINGS_KEY,
+    defaultIntegrationSettings(),
+  );
+}
+
+export function saveIntegrationSettings(settings: IntegrationSettings) {
+  const hasEinvoiceInfo =
+    settings.einvoiceProvider.trim().length > 0 &&
+    settings.einvoiceEndpoint.trim().length > 0 &&
+    settings.einvoiceUsername.trim().length > 0 &&
+    settings.einvoiceTokenPreview.trim().length > 0;
+  const hasOperationalInfo =
+    hasEinvoiceInfo || settings.idisWebhookUrl.trim() || settings.transportApiEndpoint.trim();
+
+  writeJson(INTEGRATION_SETTINGS_KEY, {
+    ...settings,
+    einvoiceEnabled: hasEinvoiceInfo ? settings.einvoiceEnabled : false,
+    archiveEnabled: hasEinvoiceInfo ? settings.archiveEnabled : false,
+    lastHealthCheckAt: hasOperationalInfo ? new Date().toISOString() : settings.lastHealthCheckAt,
+    status: hasEinvoiceInfo ? "hazir" : hasOperationalInfo ? "eksik-bilgi" : "beklemede",
+  });
+}
+
+export function simulateIntegrationHealthCheck() {
+  const settings = getIntegrationSettings();
+  const hasAnyEndpoint =
+    settings.einvoiceEndpoint.trim() ||
+    settings.idisWebhookUrl.trim() ||
+    settings.transportApiEndpoint.trim();
+
+  if (!hasAnyEndpoint) {
+    return {
+      ok: false,
+      message:
+        "E-fatura, e-arşiv, İDİS veya nakliye için en az bir bağlantı adresi ekleyin.",
+    };
+  }
+
+  saveIntegrationSettings({
+    ...settings,
+    lastHealthCheckAt: new Date().toISOString(),
+  });
+
+  return {
+    ok: true,
+    message: "Entegrasyon altyapısı kontrol edildi; canlı API bilgileri girilince gönderim aktifleşir.",
+  };
+}
+
+export function getCustomerRegistrations() {
+  return readJson<CustomerRegistration[]>(CUSTOMER_REGISTRATIONS_KEY, []);
+}
+
+export function recordCustomerRegistration(params: Omit<CustomerRegistration, "id" | "createdAt" | "status">) {
+  const registration: CustomerRegistration = {
+    ...params,
+    id: `UYE-${Date.now()}`,
+    createdAt: new Date().toISOString(),
+    status: "yeni",
+  };
+
+  writeJson(CUSTOMER_REGISTRATIONS_KEY, [registration, ...getCustomerRegistrations()]);
+  return registration;
 }
 
 export function simulateIdisSync() {
@@ -381,4 +490,6 @@ export function resetCommerceStore() {
   writeJson(TRANSPORT_ORDERS_KEY, []);
   writeJson(BUNDLES_KEY, defaultBundles());
   writeJson(IDIS_SETTINGS_KEY, defaultIdisSettings());
+  writeJson(INTEGRATION_SETTINGS_KEY, defaultIntegrationSettings());
+  writeJson(CUSTOMER_REGISTRATIONS_KEY, []);
 }

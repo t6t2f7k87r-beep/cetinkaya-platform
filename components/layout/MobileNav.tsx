@@ -15,7 +15,7 @@ const links = [
   { title: "Nakliye", href: "/nakliye" },
   { title: "AI Asistan", href: "/ai" },
   { title: "E-Fatura", href: "/efatura" },
-  { title: "Admin", href: "/admin" },
+  { title: "Giriş", href: "/giris" },
   { title: "İletişim", href: "/iletisim" },
 ];
 
@@ -49,7 +49,7 @@ export default function MobileNav() {
       </button>
 
       {isOpen ? (
-        <div className="mobile-menu-panel absolute left-0 top-24 w-full border-b border-slate-200 bg-white px-4 py-5 shadow-xl shadow-slate-950/10 sm:px-6">
+        <div className="mobile-menu-panel absolute left-0 top-24 max-h-[calc(100svh-96px)] w-full overflow-y-auto border-b border-slate-200 bg-white px-4 py-5 shadow-xl shadow-slate-950/10 sm:px-6">
           <nav className="grid gap-2">
             {links.map((item) => (
               <Link
@@ -61,6 +61,15 @@ export default function MobileNav() {
                 {item.title}
               </Link>
             ))}
+            {isLoggedIn ? (
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+                className="rounded-xl px-4 py-3 font-bold text-slate-700 transition hover:bg-red-50 hover:text-red-700"
+              >
+                Admin
+              </Link>
+            ) : null}
           </nav>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
@@ -78,11 +87,11 @@ export default function MobileNav() {
               </button>
             ) : (
               <Link
-                href="/giris"
+                href="/kayit-ol"
                 onClick={() => setIsOpen(false)}
                 className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-700"
               >
-                Giriş
+                Kayıt Ol
               </Link>
             )}
 

@@ -1,6 +1,9 @@
- "use client";
+"use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import { AUTH_EVENT, isAdminSessionActive } from "@/lib/auth";
 
 const links = [
   {
@@ -36,19 +39,33 @@ const links = [
     href: "/efatura",
   },
   {
-    title: "Admin",
-    href: "/admin",
-  },
-  {
     title: "İletişim",
     href: "/iletisim",
   },
 ];
 
 export default function DesktopNav() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const visibleLinks = isLoggedIn
+    ? [...links, { title: "Admin", href: "/admin" }]
+    : links;
+
+  useEffect(() => {
+    const syncSession = () => setIsLoggedIn(isAdminSessionActive());
+
+    syncSession();
+    window.addEventListener(AUTH_EVENT, syncSession);
+    window.addEventListener("storage", syncSession);
+
+    return () => {
+      window.removeEventListener(AUTH_EVENT, syncSession);
+      window.removeEventListener("storage", syncSession);
+    };
+  }, []);
+
   return (
     <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
-      {links.map((item) => (
+      {visibleLinks.map((item) => (
         <Link
           key={item.href}
           href={item.href}

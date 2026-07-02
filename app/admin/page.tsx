@@ -1,11 +1,14 @@
 "use client";
 
 import {
+  Archive,
   BarChart3,
   FileText,
+  KeyRound,
   PackageCheck,
   Plug,
   RefreshCw,
+  Settings2,
   Save,
   Truck,
   Users,
@@ -17,7 +20,9 @@ import Navbar from "@/components/layout/Navbar";
 import { endAdminSession, isAdminSessionActive } from "@/lib/auth";
 import {
   addSteelBundle,
+  getCustomerRegistrations,
   getIdisSettings,
+  getIntegrationSettings,
   getManagedProducts,
   getManagedVehicles,
   getSales,
@@ -25,8 +30,10 @@ import {
   getTransportOrders,
   resetCommerceStore,
   saveIdisSettings,
+  saveIntegrationSettings,
   saveManagedProducts,
   saveManagedVehicles,
+  simulateIntegrationHealthCheck,
   simulateIdisSync,
 } from "@/lib/commerce-store";
 
@@ -38,6 +45,10 @@ export default function AdminPage() {
   const [transportOrders, setTransportOrders] = useState(() => getTransportOrders());
   const [bundles, setBundles] = useState(() => getSteelBundles());
   const [idisSettings, setIdisSettings] = useState(() => getIdisSettings());
+  const [integrationSettings, setIntegrationSettings] = useState(() =>
+    getIntegrationSettings(),
+  );
+  const [registrations, setRegistrations] = useState(() => getCustomerRegistrations());
   const [bundleId, setBundleId] = useState("");
   const [bundleWeight, setBundleWeight] = useState(5);
   const [bundleProductId, setBundleProductId] = useState(
@@ -76,8 +87,15 @@ export default function AdminPage() {
           .reduce((sum, sale) => sum + sale.total, 0)
           .toLocaleString("tr-TR")}`,
       },
+      {
+        icon: KeyRound,
+        label: "Yeni Kayıt",
+        value: registrations
+          .filter((registration) => registration.status === "yeni")
+          .length.toString(),
+      },
     ],
-    [bundles, idisSettings.status, products, sales, transportOrders],
+    [bundles, idisSettings.status, products, registrations, sales, transportOrders],
   );
 
   function refreshAll(message?: string) {
@@ -87,6 +105,8 @@ export default function AdminPage() {
     setTransportOrders(getTransportOrders());
     setBundles(getSteelBundles());
     setIdisSettings(getIdisSettings());
+    setIntegrationSettings(getIntegrationSettings());
+    setRegistrations(getCustomerRegistrations());
 
     if (message) {
       setStatus(message);
@@ -324,6 +344,195 @@ export default function AdminPage() {
               >
                 <Save size={18} />
                 İDİS Ayarlarını Kaydet
+              </button>
+            </div>
+          </section>
+
+          <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-700">
+                    <Settings2 size={24} />
+                  </div>
+
+                  <div>
+                    <h2 className="text-2xl font-black text-slate-950">
+                      E-fatura, e-arşiv ve servis entegrasyonları
+                    </h2>
+                    <p className="mt-1 text-sm font-bold text-slate-500">
+                      Durum: {integrationSettings.status === "hazir" ? "Gönderime hazır" : "Kurulum bekliyor"}
+                    </p>
+                  </div>
+                </div>
+
+                <p className="mt-4 max-w-3xl leading-7 text-slate-600">
+                  Özel entegratör, e-arşiv, İDİS webhook ve nakliye servis
+                  adresleri bu merkezden yönetilir. Canlı API kullanıcı
+                  bilgileri geldiğinde fatura gönderimi ve senkronizasyon aynı
+                  panelden aktif edilir.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const result = simulateIntegrationHealthCheck();
+                  refreshAll(result.message);
+                }}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-red-700"
+              >
+                <RefreshCw size={18} />
+                Bağlantıları Kontrol Et
+              </button>
+            </div>
+
+            <div className="mt-6 grid gap-5 lg:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  Özel Entegratör
+                </span>
+                <input
+                  value={integrationSettings.einvoiceProvider}
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      einvoiceProvider: event.target.value,
+                    }))
+                  }
+                  placeholder="Logo, Paraşüt, Uyumsoft, Mikro vb."
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  E-Fatura / E-Arşiv API Adresi
+                </span>
+                <input
+                  value={integrationSettings.einvoiceEndpoint}
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      einvoiceEndpoint: event.target.value,
+                    }))
+                  }
+                  placeholder="https://api..."
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  Entegratör Kullanıcı
+                </span>
+                <input
+                  value={integrationSettings.einvoiceUsername}
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      einvoiceUsername: event.target.value,
+                    }))
+                  }
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  Entegratör Token / Şifre
+                </span>
+                <input
+                  value={integrationSettings.einvoiceTokenPreview}
+                  type="password"
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      einvoiceTokenPreview: event.target.value,
+                    }))
+                  }
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  İDİS Webhook Adresi
+                </span>
+                <input
+                  value={integrationSettings.idisWebhookUrl}
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      idisWebhookUrl: event.target.value,
+                    }))
+                  }
+                  placeholder="https://..."
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-bold text-slate-600">
+                  Nakliye Servis API Adresi
+                </span>
+                <input
+                  value={integrationSettings.transportApiEndpoint}
+                  onChange={(event) =>
+                    setIntegrationSettings((current) => ({
+                      ...current,
+                      transportApiEndpoint: event.target.value,
+                    }))
+                  }
+                  placeholder="https://..."
+                  className="mt-2 h-12 w-full rounded-2xl border border-slate-200 px-4 outline-none transition focus:border-red-700"
+                />
+              </label>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-wrap gap-3">
+                <label className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3">
+                  <input
+                    checked={integrationSettings.einvoiceEnabled}
+                    type="checkbox"
+                    onChange={(event) =>
+                      setIntegrationSettings((current) => ({
+                        ...current,
+                        einvoiceEnabled: event.target.checked,
+                      }))
+                    }
+                    className="h-5 w-5 accent-red-700"
+                  />
+                  <span className="font-bold text-slate-700">E-fatura aktif</span>
+                </label>
+
+                <label className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3">
+                  <input
+                    checked={integrationSettings.archiveEnabled}
+                    type="checkbox"
+                    onChange={(event) =>
+                      setIntegrationSettings((current) => ({
+                        ...current,
+                        archiveEnabled: event.target.checked,
+                      }))
+                    }
+                    className="h-5 w-5 accent-red-700"
+                  />
+                  <span className="font-bold text-slate-700">E-arşiv aktif</span>
+                </label>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  saveIntegrationSettings(integrationSettings);
+                  refreshAll("Entegrasyon ayarları kaydedildi.");
+                }}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-red-700 px-5 py-3 font-bold text-white"
+              >
+                <Archive size={18} />
+                Entegrasyonları Kaydet
               </button>
             </div>
           </section>
@@ -636,6 +845,64 @@ export default function AdminPage() {
               </div>
             </section>
           </div>
+
+          <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <h2 className="text-2xl font-black text-slate-950">
+                  Üye kayıt talepleri
+                </h2>
+                <p className="mt-2 leading-7 text-slate-600">
+                  Kayıt ol ekranından gelen firma ve müşteri talepleri burada
+                  toplanır. Telefon, vergi bilgisi ve ihtiyaç notu tek ekranda
+                  takip edilir.
+                </p>
+              </div>
+
+              <Link
+                href="/kayit-ol"
+                className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-5 py-3 font-bold text-slate-700 transition hover:border-red-200 hover:text-red-700"
+              >
+                Kayıt Sayfasını Aç
+              </Link>
+            </div>
+
+            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              {registrations.length === 0 ? (
+                <p className="p-5 text-slate-600">
+                  Henüz kayıt talebi yok. Kayıt ol sayfasından talep
+                  oluşturulunca burada görünecek.
+                </p>
+              ) : (
+                registrations.slice(0, 10).map((registration) => (
+                  <div
+                    key={registration.id}
+                    className="grid gap-3 border-b border-slate-200 p-4 last:border-b-0 lg:grid-cols-[1fr_180px_140px]"
+                  >
+                    <div>
+                      <strong className="text-slate-950">
+                        {registration.companyName}
+                      </strong>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {registration.fullName} / {registration.phone}
+                      </p>
+                      <p className="mt-1 text-xs font-semibold text-slate-500">
+                        {registration.need || "İhtiyaç notu eklenmedi."}
+                      </p>
+                    </div>
+
+                    <span className="font-semibold text-slate-700">
+                      {registration.city} · {registration.taxNumber || "Vergi no yok"}
+                    </span>
+
+                    <span className="font-black text-red-700">
+                      {registration.status === "yeni" ? "Yeni" : "İncelendi"}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
 
           <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
             <h2 className="text-2xl font-black text-slate-950">
