@@ -87,6 +87,15 @@
   select,
   textarea {
     font-size: 16px;
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  textarea,
+  button,
+  a {
+    touch-action: manipulation;
   }
 
   :focus-visible {
@@ -202,6 +211,53 @@
   .mobile-menu-panel {
     animation: menu-drop 220ms ease both;
     transform-origin: top;
+  }
+
+  .mobile-comfort {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 640px;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      scroll-padding-top: 76px;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    section {
+      scroll-margin-top: 76px;
+    }
+
+    button,
+    [role="button"],
+    input,
+    select,
+    textarea {
+      border-radius: 14px;
+    }
+
+    input,
+    select {
+      min-height: 48px;
+    }
+
+    textarea {
+      min-height: 112px;
+    }
+
+    table,
+    pre,
+    code {
+      max-width: 100%;
+    }
+
+    .premium-card:hover::after,
+    .interactive-lift:hover {
+      transform: none;
+    }
   }
 
   @keyframes reveal-up {

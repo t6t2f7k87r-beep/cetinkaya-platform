@@ -58,9 +58,9 @@ export default function LiveSupportWidget() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-[70]">
+    <div className="fixed bottom-[calc(16px+env(safe-area-inset-bottom))] right-4 z-[70] sm:bottom-5 sm:right-5">
       {isOpen ? (
-        <section className="mb-4 w-[min(360px,calc(100vw-40px))] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl shadow-slate-950/20">
+        <section className="mb-3 w-[min(360px,calc(100vw-32px))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-950/20 sm:mb-4 sm:rounded-3xl">
           <div className="flex items-center justify-between bg-slate-950 px-5 py-4 text-white">
             <div>
               <p className="font-black">Canlı Destek</p>
@@ -77,7 +77,7 @@ export default function LiveSupportWidget() {
             </button>
           </div>
 
-          <div className="max-h-80 space-y-3 overflow-y-auto bg-slate-50 p-4">
+          <div className="max-h-[42svh] space-y-3 overflow-y-auto bg-slate-50 p-4 sm:max-h-80">
             {messages.map((message, index) => (
               <div
                 key={`${message.author}-${index}`}
@@ -135,7 +135,7 @@ export default function LiveSupportWidget() {
       <button
         type="button"
         onClick={() => setIsOpen((value) => !value)}
-        className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-700 text-white shadow-2xl shadow-red-900/30 transition hover:bg-red-800"
+        className="flex h-13 w-13 items-center justify-center rounded-2xl bg-red-700 text-white shadow-2xl shadow-red-900/30 transition hover:bg-red-800 sm:h-14 sm:w-14"
         aria-label="Canlı destek"
       >
         <MessageCircle size={25} />
