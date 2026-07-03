@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { BrainCircuit, Send, Sparkles } from "lucide-react";
 
 import { AiAnswer, buildLocalAiAnswer } from "@/lib/ai";
@@ -19,6 +19,16 @@ export default function AiAssistantPanel() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState("local");
+  const [chaosActive, setChaosActive] = useState(false);
+
+  function triggerChaosIfNeeded(value: string) {
+    if (value.trim().toLocaleLowerCase("tr-TR") !== "porno saitcan") {
+      return;
+    }
+
+    setChaosActive(true);
+    window.setTimeout(() => setChaosActive(false), 5200);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -68,7 +78,37 @@ export default function AiAssistantPanel() {
   }, [submittedPrompt]);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <div className={chaosActive ? "ai-chaos-zone grid gap-8 lg:grid-cols-[0.9fr_1.1fr]" : "grid gap-8 lg:grid-cols-[0.9fr_1.1fr]"}>
+      {chaosActive ? (
+        <div className="pointer-events-none fixed inset-0 z-[95] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(239,68,68,.22),transparent_46%)]" />
+          {Array.from({ length: 34 }, (_, index) => (
+            <span
+              key={index}
+              className="chaos-spark"
+              style={
+                {
+                  left: `${(index * 29) % 100}%`,
+                  top: `${12 + ((index * 17) % 72)}%`,
+                  "--spark-delay": `${(index % 9) * 90}ms`,
+                  "--spark-color": ["#ef4444", "#facc15", "#22c55e", "#38bdf8", "#ffffff"][index % 5],
+                } as CSSProperties
+              }
+            />
+          ))}
+          <div className="absolute inset-x-4 top-1/2 mx-auto max-w-xl -translate-y-1/2 rounded-3xl border border-white/30 bg-slate-950/85 p-6 text-center text-white shadow-2xl backdrop-blur">
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-red-200">
+              Kaos modu
+            </p>
+            <h2 className="mt-3 text-4xl font-black">
+              Havai fişekler patladı
+            </h2>
+            <p className="mt-3 text-sm text-slate-300">
+              AI asistan gizli komutu yakaladı. Sistem güvende, sadece sahne karıştı.
+            </p>
+          </div>
+        </div>
+      ) : null}
       <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-700 text-white">
           <BrainCircuit size={28} />
@@ -92,6 +132,7 @@ export default function AiAssistantPanel() {
             onClick={() => {
               setPrompt(item);
               setSubmittedPrompt(item);
+              triggerChaosIfNeeded(item);
               }}
               className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-left font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
             >
@@ -106,6 +147,7 @@ export default function AiAssistantPanel() {
             event.preventDefault();
             if (prompt.trim().length > 0) {
               setSubmittedPrompt(prompt);
+              triggerChaosIfNeeded(prompt);
             }
           }}
         >
