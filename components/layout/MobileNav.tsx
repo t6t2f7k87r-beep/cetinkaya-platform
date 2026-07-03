@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Home, Menu, MessageCircle, PackageSearch, Phone, Truck, X } from "lucide-react";
+import { FileText, Home, Menu, MessageCircle, PackageSearch, Phone, ShoppingCart, Truck, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -9,6 +9,7 @@ import { AUTH_EVENT, endAdminSession, isAdminSessionActive, syncAdminSession } f
 const primaryLinks = [
   { title: "Anasayfa", href: "/", icon: Home },
   { title: "Ürünler", href: "/urunler", icon: PackageSearch },
+  { title: "Sepet", href: "/sepet", icon: ShoppingCart },
   { title: "Teklif Al", href: "/teklif", icon: FileText },
   { title: "Nakliye", href: "/nakliye", icon: Truck },
 ];

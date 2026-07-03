@@ -24,6 +24,7 @@ import Navbar from "@/components/layout/Navbar";
 import { endAdminSession, isAdminSessionActive, syncAdminSession } from "@/lib/auth";
 import {
   addSteelBundle,
+  CustomerRegistration,
   getCustomerRegistrations,
   getIdisSettings,
   getIntegrationSettings,
@@ -39,6 +40,8 @@ import {
   saveManagedVehicles,
   simulateIntegrationHealthCheck,
   simulateIdisSync,
+  SaleRecord,
+  TransportOrder,
 } from "@/lib/commerce-store";
 
 type SecureIntegrationAccess = {
@@ -50,6 +53,19 @@ type SecureIntegrationAccess = {
   configured: boolean;
   missingKeys: string[];
 };
+
+type AdminInbox = {
+  registrations: CustomerRegistration[];
+  sales: SaleRecord[];
+  transportOrders: TransportOrder[];
+};
+
+function mergeById<T extends { id: string }>(localItems: T[], remoteItems: T[]) {
+  const items = new Map<string, T>();
+
+  [...remoteItems, ...localItems].forEach((item) => items.set(item.id, item));
+  return Array.from(items.values());
+}
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => isAdminSessionActive());
@@ -88,6 +104,24 @@ export default function AdminPage() {
       .then((response) => (response.ok ? response.json() : null))
       .then((data: SecureIntegrationAccess | null) => setSecureAccess(data))
       .finally(() => setSecureAccessLoading(false));
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    fetch("/api/admin/inbox", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((inbox: AdminInbox | null) => {
+        if (!inbox) {
+          return;
+        }
+
+        setRegistrations((current) => mergeById(current, inbox.registrations));
+        setSales((current) => mergeById(current, inbox.sales));
+        setTransportOrders((current) => mergeById(current, inbox.transportOrders));
+      });
   }, [isLoggedIn]);
 
   const cards = useMemo(
@@ -144,6 +178,20 @@ export default function AdminPage() {
 
     if (message) {
       setStatus(message);
+    }
+
+    if (isLoggedIn) {
+      fetch("/api/admin/inbox", { cache: "no-store" })
+        .then((response) => (response.ok ? response.json() : null))
+        .then((inbox: AdminInbox | null) => {
+          if (!inbox) {
+            return;
+          }
+
+          setRegistrations((current) => mergeById(current, inbox.registrations));
+          setSales((current) => mergeById(current, inbox.sales));
+          setTransportOrders((current) => mergeById(current, inbox.transportOrders));
+        });
     }
   }
 

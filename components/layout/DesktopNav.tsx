@@ -15,6 +15,10 @@ const links = [
     href: "/urunler",
   },
   {
+    title: "Sepet",
+    href: "/sepet",
+  },
+  {
     title: "Kategoriler",
     href: "/kategoriler",
   },

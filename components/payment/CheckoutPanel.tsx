@@ -2,12 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { CreditCard, FileCheck2, ShieldCheck } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import {
   getManagedProducts,
   recordSale,
   STORE_EVENT,
 } from "@/lib/commerce-store";
+import { clearCart, getCartItems, getCartTotal, CartItem } from "@/lib/cart";
 import { createPaymentIntent } from "@/services/payment";
 import { PaymentProvider } from "@/types/payment";
 
@@ -18,10 +20,12 @@ const providers: { label: string; value: PaymentProvider }[] = [
 ];
 
 export default function CheckoutPanel() {
+  const searchParams = useSearchParams();
   const [provider, setProvider] = useState<PaymentProvider>("iyzico");
   const [quantity, setQuantity] = useState(5);
   const [products, setProducts] = useState(() => getManagedProducts());
   const [productId, setProductId] = useState(products[0].id);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [status, setStatus] = useState("");
@@ -35,8 +39,22 @@ export default function CheckoutPanel() {
     return () => window.removeEventListener(STORE_EVENT, refreshProducts);
   }, []);
 
+  useEffect(() => {
+    const incomingProductId = Number(searchParams.get("productId"));
+
+    if (Number.isFinite(incomingProductId) && products.some((product) => product.id === incomingProductId)) {
+      setProductId(incomingProductId);
+      setQuantity(1);
+    }
+
+    if (searchParams.get("source") === "cart") {
+      setCartItems(getCartItems());
+    }
+  }, [products, searchParams]);
+
   const safeQuantity = Number.isFinite(quantity) ? Math.max(1, quantity) : 1;
-  const subtotal = selectedProduct.price * safeQuantity;
+  const hasCart = cartItems.length > 0;
+  const subtotal = hasCart ? getCartTotal(cartItems) : selectedProduct.price * safeQuantity;
   const serviceFee = Math.round(subtotal * 0.015);
   const total = subtotal + serviceFee;
 
@@ -61,6 +79,29 @@ export default function CheckoutPanel() {
           Ödeme sağlayıcısı seçildiğinde sisteme hazır bir ödeme referansı üretilir.
         </p>
 
+        {hasCart ? (
+          <div className="mt-6 rounded-3xl border border-red-100 bg-red-50 p-5">
+            <h2 className="font-black text-slate-950">
+              Sepetten aktarılan ürünler
+            </h2>
+            <div className="mt-4 space-y-3">
+              {cartItems.map((item) => (
+                <div
+                  key={item.productId}
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 text-sm"
+                >
+                  <span className="font-bold text-slate-800">
+                    {item.name} · {item.quantity} {item.unit}
+                  </span>
+                  <strong className="text-red-700">
+                    ₺{(item.price * item.quantity).toLocaleString("tr-TR")}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           <label className="block">
             <span className="text-sm font-bold text-slate-600">
@@ -68,8 +109,9 @@ export default function CheckoutPanel() {
             </span>
             <select
               value={productId}
+              disabled={hasCart}
               onChange={(event) => setProductId(Number(event.target.value))}
-              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 bg-white px-5 font-semibold text-slate-950 outline-none transition focus:border-red-700"
+              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 bg-white px-5 font-semibold text-slate-950 outline-none transition focus:border-red-700 disabled:bg-slate-100"
             >
               {products.map((product) => (
                 <option key={product.id} value={product.id}>
@@ -87,8 +129,9 @@ export default function CheckoutPanel() {
               min={1}
               type="number"
               value={quantity}
+              disabled={hasCart}
               onChange={(event) => setQuantity(Number(event.target.value))}
-              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 px-5 font-semibold outline-none transition focus:border-red-700"
+              className="mt-2 h-14 w-full rounded-2xl border border-slate-200 px-5 font-semibold outline-none transition focus:border-red-700 disabled:bg-slate-100"
             />
           </label>
 
@@ -171,14 +214,14 @@ export default function CheckoutPanel() {
           <div className="flex justify-between text-slate-600">
             <span>Birim fiyat</span>
             <strong className="text-slate-950">
-              ₺{selectedProduct.price.toLocaleString("tr-TR")}
+              {hasCart ? "Sepet toplamı" : `₺${selectedProduct.price.toLocaleString("tr-TR")}`}
             </strong>
           </div>
 
           <div className="flex justify-between text-slate-600">
             <span>Miktar</span>
             <strong className="text-slate-950">
-              {safeQuantity} {selectedProduct.unit}
+              {hasCart ? `${cartItems.length} kalem` : `${safeQuantity} ${selectedProduct.unit}`}
             </strong>
           </div>
 
@@ -210,21 +253,44 @@ export default function CheckoutPanel() {
         <button
           type="button"
           onClick={() => {
-            const sale = recordSale({
-              productId: selectedProduct.id,
-              quantity: safeQuantity,
-              customerName,
-              customerPhone,
-              total,
-            });
+            const saleRecords = hasCart
+              ? cartItems.map((item) =>
+                  recordSale({
+                    productId: item.productId,
+                    quantity: item.quantity,
+                    customerName,
+                    customerPhone,
+                    total: item.price * item.quantity,
+                  }),
+                )
+              : [
+                  recordSale({
+                    productId: selectedProduct.id,
+                    quantity: safeQuantity,
+                    customerName,
+                    customerPhone,
+                    total,
+                  }),
+                ];
+
+            void Promise.all(
+              saleRecords.map((sale) =>
+                fetch("/api/orders", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(sale),
+                }),
+              ),
+            );
+
+            if (hasCart) {
+              clearCart();
+              setCartItems([]);
+            }
 
             setProducts(getManagedProducts());
             setStatus(
-              `${sale.id} kaydedildi. ${sale.shipmentId} sevk kaydı açıldı${
-                sale.bundleIds.length > 0
-                  ? `, ${sale.bundleIds.length} demir bağı stoktan düşüldü.`
-                  : "."
-              }`,
+              `${saleRecords.length} satış kaydı oluşturuldu. Admin paneline ve sevk kayıtlarına aktarıldı.`,
             );
           }}
           className="mt-8 h-14 w-full rounded-2xl bg-gradient-to-r from-red-700 to-slate-950 font-bold text-white shadow-xl shadow-red-900/20"

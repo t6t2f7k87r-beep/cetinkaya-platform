@@ -130,6 +130,17 @@ export default function TransportCalculator() {
                 note,
               });
 
+              void fetch("/api/transport-orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  result,
+                  customerName,
+                  customerPhone,
+                  note,
+                }),
+              });
+
               setSavedMessage(`${order.id} kaydedildi. Admin panelinde nakliye kayıtlarına eklendi.`);
             }}
           />

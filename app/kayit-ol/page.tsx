@@ -54,9 +54,9 @@ export default function RegisterPage() {
 
           <form
             className="reveal-scale rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 sm:p-8"
-            onSubmit={(event) => {
+            onSubmit={async (event) => {
               event.preventDefault();
-              recordCustomerRegistration({
+              const payload = {
                 companyName,
                 fullName,
                 phone,
@@ -64,7 +64,15 @@ export default function RegisterPage() {
                 city,
                 taxNumber,
                 need,
+              };
+
+              recordCustomerRegistration(payload);
+              await fetch("/api/registrations", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
               });
+
               setCompanyName("");
               setFullName("");
               setPhone("");

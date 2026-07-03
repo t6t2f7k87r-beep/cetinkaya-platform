@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import { Product } from "@/types/product";
-import { ArrowRight, MapPin, Truck } from "lucide-react";
+import { addToCart } from "@/lib/cart";
+import { ArrowRight, MapPin, ShoppingCart, Truck } from "lucide-react";
 
 type Props = {
   product: Product;
@@ -79,11 +80,29 @@ export default function ProductCard({ product, index = 0 }: Props) {
           </div>
 
           <Link
-            href={`/urunler?kategori=${encodeURIComponent(product.category)}`}
+            href={`/teklif?productId=${product.id}`}
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-white transition duration-300 group-hover:scale-110 group-hover:bg-red-700"
-            aria-label={`${product.name} detayına git`}
+            aria-label={`${product.name} için teklif al`}
           >
             <ArrowRight size={20} />
+          </Link>
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => addToCart(product)}
+            className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white text-sm font-bold text-slate-800 transition hover:border-red-200 hover:text-red-700"
+          >
+            <ShoppingCart size={17} />
+            Sepete Ekle
+          </button>
+
+          <Link
+            href={`/sepet`}
+            className="flex h-12 items-center justify-center rounded-2xl bg-red-700 text-sm font-bold text-white transition hover:bg-red-800"
+          >
+            Sepete Git
           </Link>
         </div>
       </div>
