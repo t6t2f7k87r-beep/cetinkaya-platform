@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { SaleRecord } from "@/lib/commerce-store";
+import type { SaleRecord } from "@/lib/commerce-store";
 import { addServerSale } from "@/lib/server-store";
 
 export async function POST(request: Request) {
@@ -19,6 +19,6 @@ export async function POST(request: Request) {
     bundleIds: [],
   };
 
-  addServerSale(sale);
+  await addServerSale(sale);
   return NextResponse.json({ ok: true, sale });
 }

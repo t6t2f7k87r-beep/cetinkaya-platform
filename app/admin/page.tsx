@@ -58,6 +58,7 @@ type AdminInbox = {
   registrations: CustomerRegistration[];
   sales: SaleRecord[];
   transportOrders: TransportOrder[];
+  persistence?: "kv" | "memory";
 };
 
 function mergeById<T extends { id: string }>(localItems: T[], remoteItems: T[]) {
@@ -79,6 +80,7 @@ export default function AdminPage() {
     getIntegrationSettings(),
   );
   const [registrations, setRegistrations] = useState(() => getCustomerRegistrations());
+  const [dataPersistence, setDataPersistence] = useState<"kv" | "memory">("memory");
   const [secureAccess, setSecureAccess] = useState<SecureIntegrationAccess | null>(null);
   const [secureAccessLoading, setSecureAccessLoading] = useState(false);
   const [showEinvoicePassword, setShowEinvoicePassword] = useState(false);
@@ -121,6 +123,7 @@ export default function AdminPage() {
         setRegistrations((current) => mergeById(current, inbox.registrations));
         setSales((current) => mergeById(current, inbox.sales));
         setTransportOrders((current) => mergeById(current, inbox.transportOrders));
+        setDataPersistence(inbox.persistence ?? "memory");
       });
   }, [isLoggedIn]);
 
@@ -191,6 +194,7 @@ export default function AdminPage() {
           setRegistrations((current) => mergeById(current, inbox.registrations));
           setSales((current) => mergeById(current, inbox.sales));
           setTransportOrders((current) => mergeById(current, inbox.transportOrders));
+          setDataPersistence(inbox.persistence ?? "memory");
         });
     }
   }
@@ -258,6 +262,10 @@ export default function AdminPage() {
             </div>
 
             <div className="flex flex-wrap gap-3">
+              <span className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600">
+                Veri: {dataPersistence === "kv" ? "Kalıcı veritabanı" : "Geçici mod"}
+              </span>
+
               <button
                 type="button"
                 onClick={() => refreshAll("Ekran güncellendi.")}

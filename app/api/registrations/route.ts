@@ -4,7 +4,7 @@ import { addServerRegistration } from "@/lib/server-store";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const registration = addServerRegistration({
+  const registration = await addServerRegistration({
     companyName: String(body.companyName ?? "").trim(),
     fullName: String(body.fullName ?? "").trim(),
     phone: String(body.phone ?? "").trim(),

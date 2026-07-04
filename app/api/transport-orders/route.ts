@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { TransportOrder } from "@/lib/commerce-store";
+import type { TransportOrder } from "@/lib/commerce-store";
 import { addServerTransportOrder } from "@/lib/server-store";
 
 export async function POST(request: Request) {
@@ -15,6 +15,6 @@ export async function POST(request: Request) {
     status: "teklif",
   };
 
-  addServerTransportOrder(order);
+  await addServerTransportOrder(order);
   return NextResponse.json({ ok: true, order });
 }

@@ -12,5 +12,5 @@ export async function GET() {
     return NextResponse.json({ message: "Yetkisiz erişim." }, { status: 401 });
   }
 
-  return NextResponse.json(listAdminInbox());
+  return NextResponse.json(await listAdminInbox());
 }
