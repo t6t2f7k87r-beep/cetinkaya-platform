@@ -70,7 +70,7 @@ export default function TransportForm({
         />
 
         <div className="rounded-2xl border border-red-100 bg-red-50 px-5 py-4 text-sm font-semibold leading-6 text-red-900">
-          Hesaplama; rota mesafesi, araç sınıfı, kapasite ve sefer sayısına göre anlık güncellenir.
+          Hesaplama; rota mesafesi, araç sınıfı, kapasite ve sefer sayısına göre yaklaşık teklif üretir.
         </div>
 
       </div>

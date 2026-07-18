@@ -17,7 +17,7 @@ export default function SteelPrices() {
           </h2>
 
           <p className="mt-4 max-w-2xl text-lg text-slate-600">
-            Fiyatlar ileride API ile otomatik güncellenecek.
+            Bölgesel teklif seviyelerini ve piyasa hareketlerini takip edin.
           </p>
 
         </div>

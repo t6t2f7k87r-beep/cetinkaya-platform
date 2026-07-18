@@ -35,9 +35,9 @@ export default function RegisterPage() {
             </h1>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Teklif, nakliye, e-fatura/e-arşiv ve stok takibi süreçlerini daha
+              Teklif, nakliye, e-fatura/e-arşiv ve teslimat süreçlerini daha
               düzenli yürütmek için bilgilerinizi bırakın. Ekibimiz talebinizi
-              admin panelinden takip edip size dönüş yapar.
+              inceleyip size dönüş yapar.
             </p>
 
             <div className="mt-8 grid gap-3 text-sm font-bold text-slate-700">

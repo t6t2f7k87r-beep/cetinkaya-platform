@@ -170,12 +170,8 @@ export function buildLocalAiAnswer(message: string): AiAnswer {
       : hasTransportIntent
         ? " Nakliye için çıkış ili, varış ili, tonaj ve teslim süresi birlikte girildiğinde daha doğru rota planı çıkar."
         : "";
-  const stockText = recommended
-    .map((product) => `${product.name}: ${product.stockQuantity.toLocaleString("tr-TR")} ${product.unit}`)
-    .join(", ");
-
   return {
-    summary: `Talebinizi ürün, stok, ölçü ve teslimat bilgileriyle birlikte okudum.${transportText} Öne çıkan stok durumu: ${stockText}.`,
+    summary: `Talebinizi ürün, ölçü ve teslimat bilgileriyle birlikte okudum.${transportText} Öne çıkan malzemeler için teklif seviyelerini aşağıda özetledim.`,
     products: recommended.map(toSuggestion),
     estimatedTotal,
     nextStep:
@@ -194,7 +190,7 @@ export function buildLocalAiAnswer(message: string): AiAnswer {
         }
       : undefined,
     actionItems: [
-      "Ürün stoklarını admin panelinden güncel tutun.",
+      "Miktar, teslimat ili ve teslim tarihiyle net teklif oluşturun.",
       hasTransportIntent
         ? "Nakliye teklifini kaydedip sevk planına alın."
         : "Teslimat ili ve tonaj girerek nakliye bedelini netleştirin.",

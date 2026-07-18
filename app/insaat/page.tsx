@@ -20,7 +20,7 @@ const services = [
     icon: Hammer,
     title: "Saha odaklı çözüm",
     description:
-      "Malzeme seçimi, stok takibi ve teklif sürecinde hızlı dönüşle proje ekiplerini destekleriz.",
+      "Malzeme seçimi, teslimat planı ve teklif sürecinde hızlı dönüşle proje ekiplerini destekleriz.",
   },
 ];
 
@@ -104,7 +104,7 @@ export default function ConstructionPage() {
                 </div>
 
                 <div className="grid gap-3 text-sm font-bold text-slate-200 sm:grid-cols-3">
-                  {["Şeffaf fiyat", "Stok takibi", "Müşteri memnuniyeti"].map(
+                  {["Şeffaf fiyat", "Teslimat planı", "Müşteri memnuniyeti"].map(
                     (item) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle2 className="text-red-300" size={18} />

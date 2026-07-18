@@ -33,7 +33,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
           </span>
 
           <span className="rounded-full bg-slate-950/90 px-3 py-1 text-xs font-bold text-white shadow-sm">
-            {product.stock ? "Stokta" : "Ön sipariş"}
+            Teklif Al
           </span>
         </div>
       </div>
@@ -56,11 +56,6 @@ export default function ProductCard({ product, index = 0 }: Props) {
           <div className="flex items-center gap-2">
             <Truck size={16} className="text-red-700" />
             {product.deliveryTime}
-          </div>
-
-          <div className="font-bold text-slate-700">
-            Stok: {product.stockQuantity.toLocaleString("tr-TR")} {product.unit}
-            {product.steelBundleCount ? ` / ${product.steelBundleCount} bağ` : ""}
           </div>
         </div>
 

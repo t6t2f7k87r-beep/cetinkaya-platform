@@ -179,7 +179,7 @@ export default function AiAssistantPanel() {
         </h2>
 
         <p className="mt-4 leading-8 text-slate-300">
-          {isLoading ? "Talebinizi ürün, stok ve nakliye verileriyle eşleştiriyorum..." : answer.summary}
+          {isLoading ? "Talebinizi ürün ve nakliye verileriyle eşleştiriyorum..." : answer.summary}
         </p>
 
         <div className="mt-6 space-y-3">
@@ -195,8 +195,7 @@ export default function AiAssistantPanel() {
                   </h3>
 
                   <p className="mt-1 text-sm text-slate-400">
-                    {product.brand} · {product.deliveryTime} · Stok:{" "}
-                    {product.stockQuantity.toLocaleString("tr-TR")} {product.unit}
+                    {product.brand} · {product.deliveryTime}
                   </p>
                 </div>
 

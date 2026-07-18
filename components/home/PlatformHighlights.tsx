@@ -64,7 +64,7 @@ export default function PlatformHighlights() {
             </h3>
 
             <p className="mt-4 leading-7 text-slate-300">
-              Amacımız; ürün, stok, nakliye, teklif ve sevk süreçlerini tek
+              Amacımız; ürün, nakliye, teklif ve sevk süreçlerini tek
               merkezden yöneterek müşterilerimize daha doğru fiyat, daha hızlı
               dönüş ve daha güvenilir teslimat sunmak.
             </p>

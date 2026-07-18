@@ -15,7 +15,7 @@ export default function PriceCenter() {
         <SectionTitle
           eyebrow="Canlı Fiyat Merkezi"
           title="Güncel Yapı Malzemesi Fiyatları"
-          description="Fiyatlar yönetim panelinden anlık olarak güncellenebilir."
+          description="Demir, çimento, gaz beton ve temel yapı malzemeleri için güncel teklif seviyelerini inceleyin."
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-2">

@@ -61,7 +61,7 @@ export default function MobileNav() {
               Çetinkayalar İnşaat
             </p>
             <p className="mt-2 text-lg font-black">
-              Hızlı teklif, stok ve nakliye işlemleri
+              Hızlı teklif, sepet ve nakliye işlemleri
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <a
